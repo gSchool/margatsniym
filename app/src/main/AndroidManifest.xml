@@ -31,7 +31,7 @@
         </activity>
 
         <activity android:name=".activities.NavigationBarActivity"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:label="Super kool stuff">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
