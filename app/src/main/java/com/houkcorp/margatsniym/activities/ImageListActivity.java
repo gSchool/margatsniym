@@ -20,9 +20,13 @@ import android.widget.TextView;
 
 
 import com.houkcorp.margatsniym.dialogs.InstagramLoginDialog;
+import com.houkcorp.margatsniym.events.LoginEvent;
 import com.houkcorp.margatsniym.fragments.ImageDetailFragment;
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.dummy.DummyContent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -41,6 +45,7 @@ public class ImageListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
+    private InstagramLoginDialog mDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +84,20 @@ public class ImageListActivity extends AppCompatActivity {
             fragmentTransaction.remove(currentFragment);
         }
 
-        DialogFragment newFragment = InstagramLoginDialog.newInstance();
-        newFragment.show(fragmentTransaction, "loginFrag");
+        mDialogFragment = InstagramLoginDialog.newInstance();
+        mDialogFragment.show(fragmentTransaction, "loginFrag");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -102,6 +119,11 @@ public class ImageListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Subscribe
+    public void onEvent(LoginEvent event){
+        mDialogFragment.dismiss();
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -175,5 +197,7 @@ public class ImageListActivity extends AppCompatActivity {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
         }
+
+
     }
 }
