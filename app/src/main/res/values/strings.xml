@@ -90,4 +90,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="my_user">My User</string>
+    <string name="following">Following</string>
 </resources>
