@@ -15,6 +15,8 @@ public class MyUserFragment extends Fragment {
         return new MyUserFragment();
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

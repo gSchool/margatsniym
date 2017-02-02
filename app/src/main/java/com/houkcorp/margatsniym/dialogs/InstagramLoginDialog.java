@@ -10,15 +10,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.houkcorp.margatsniym.R;
-import com.houkcorp.margatsniym.events.LoginEvent;
 import com.houkcorp.margatsniym.utils.InstagramWebViewClient;
-
-import org.greenrobot.eventbus.Subscribe;
 
 public class InstagramLoginDialog extends DialogFragment {
 
