@@ -30,8 +30,7 @@
                 android:value="com.houkcorp.margatsniym.activities.ImageListActivity" />
         </activity>
 
-        <activity android:name=".activities.NavigationBarActivity"
-            android:label="Super kool stuff">
+        <activity android:name=".activities.NavigationBarActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
