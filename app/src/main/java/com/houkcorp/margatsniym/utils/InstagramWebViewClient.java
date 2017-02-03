@@ -1,9 +1,12 @@
 package com.houkcorp.margatsniym.utils;
 
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
+import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.dialogs.InstagramLoginDialog;
 import com.houkcorp.margatsniym.events.LoginEvent;
 
@@ -40,5 +43,21 @@ public class InstagramWebViewClient extends WebViewClient {
         }
 
         return super.shouldOverrideUrlLoading(view, request);
+    }
+
+    @Override
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+        String errorMessage = mInstagramLoginDialog.getString(R.string.login_failed) + ": " + description;
+        Toast.makeText(mInstagramLoginDialog.getContext(), errorMessage, Toast.LENGTH_LONG).show();
+
+        super.onReceivedError(view, errorCode, description, failingUrl);
+    }
+
+    @Override
+    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        String errorMessage = mInstagramLoginDialog.getString(R.string.login_failed) + ": " + error.toString();
+        Toast.makeText(mInstagramLoginDialog.getContext(), errorMessage, Toast.LENGTH_LONG).show();
+
+        super.onReceivedError(view, request, error);
     }
 }

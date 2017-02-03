@@ -20,4 +20,6 @@
     <string name="title_activity_main_view">Images</string>
     <string name="my_user">My User</string>
     <string name="following">Following</string>
+    <string name="login_failed">Login failed.  Please try again later.</string>
+    <string name="profile_image">User Profile Image</string>
 </resources>
