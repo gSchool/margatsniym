@@ -22,4 +22,10 @@
     <string name="following">Following</string>
     <string name="login_failed">Login failed.  Please try again later.</string>
     <string name="profile_image">User Profile Image</string>
+    <string name="bio">Bio:</string>
+    <string name="images">Images</string>
+    <string name="images_header">Images:</string>
+    <string name="following_header">Following:</string>
+    <string name="following_you">Followed by:</string>
+    <string name="vertical_bar">|</string>
 </resources>

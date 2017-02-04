@@ -9,4 +9,16 @@ public class InstagramCounts {
     private double followedBy;
 
     private double follows;
+
+    public double getMedia() {
+        return media;
+    }
+
+    public double getFollowedBy() {
+        return followedBy;
+    }
+
+    public double getFollows() {
+        return follows;
+    }
 }

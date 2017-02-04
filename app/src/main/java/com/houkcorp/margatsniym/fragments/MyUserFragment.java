@@ -1,9 +1,10 @@
 package com.houkcorp.margatsniym.fragments;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,14 @@ public class MyUserFragment extends Fragment {
     private String mAccessKey;
 
     @BindView(R.id.my_user_image_view) ImageView mUserImageView;
-    @BindView(R.id.my_user_name) TextView mNameTextView;
-    @BindView(R.id.my_user_website) TextView mWebsiteTextView;
-    @BindView(R.id.my_user_bio) TextView mBioTextView;
+    @BindView(R.id.my_user_name_text_view) TextView mNameTextView;
+    @BindView(R.id.my_user_website_text_view) TextView mWebsiteTextView;
+    @BindView(R.id.my_user_bio_card_view) CardView mBioCardView;
+    @BindView(R.id.my_user_bio_text_view) TextView mBioTextView;
+    @BindView(R.id.my_user_counts_card_view) CardView mCountsCardView;
+    @BindView(R.id.my_user_media_count_text_view) TextView mMediaCountTextView;
+    @BindView(R.id.my_user_follows_text_view) TextView mFollowsTextView;
+    @BindView(R.id.my_user_followed_by_text_view) TextView mFollowedByTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,12 +96,23 @@ public class MyUserFragment extends Fragment {
         Picasso
                 .with(getContext())
                 .load(user.getProfilePicture())
-                .centerCrop()
+                .resize(75, 100)
+                .centerInside()
                 .into(mUserImageView);
 
         mNameTextView.setText(user.getFullName());
         mWebsiteTextView.setText(user.getWebsite());
         mBioTextView.setText(user.getBio());
+        mBioTextView.setMovementMethod(new ScrollingMovementMethod());
+
+        String mediaCount = "\t" + "\t" + "\t" + String.valueOf(user.getCounts().getMedia());
+        mMediaCountTextView.setText(mediaCount);
+
+        String followsCount = "\t" + "\t" + "\t" + String.valueOf(user.getCounts().getFollows());
+        mFollowsTextView.setText(followsCount);
+
+        String followedByCount = "\t" + "\t" + "\t" + String.valueOf(user.getCounts().getFollowedBy());
+        mFollowedByTextView.setText(followedByCount);
     }
 
     public void setAccessKey(String accessKey) {

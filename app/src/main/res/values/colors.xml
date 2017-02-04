@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
     <color name="tan">#DA8C49</color>
+    <color name="medium_gray">#C0C0C0</color>
+    <color name="link">#7F7FFF</color>
+    <color name="header_gray">#7E7E7E</color>
 </resources>
