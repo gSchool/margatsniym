@@ -45,6 +45,7 @@ public class MyUserFragment extends Fragment {
     @BindView(R.id.my_user_media_count_text_view) TextView mMediaCountTextView;
     @BindView(R.id.my_user_follows_text_view) TextView mFollowsTextView;
     @BindView(R.id.my_user_followed_by_text_view) TextView mFollowedByTextView;
+    //@BindView(R.id.my_user_gallery_card_view) CardView mGalleryCardView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class MyUserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_my_user, container, false);
 
-        ButterKnife.bind(this, root );
+        ButterKnife.bind(this, root);
 
         if (getArguments() != null) {
             mAccessKey = getArguments().getString(INSTAGRAM_ACCESS_KEY);
@@ -97,7 +98,7 @@ public class MyUserFragment extends Fragment {
                 .with(getContext())
                 .load(user.getProfilePicture())
                 .resize(75, 100)
-                .centerInside()
+                .centerCrop()
                 .into(mUserImageView);
 
         mNameTextView.setText(user.getFullName());
