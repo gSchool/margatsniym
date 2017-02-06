@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.houkcorp.margatsniym.R;
+import com.houkcorp.margatsniym.models.InstagramMedia;
 import com.houkcorp.margatsniym.models.InstagramResponse;
 import com.houkcorp.margatsniym.models.InstagramUser;
 import com.houkcorp.margatsniym.services.InstagramUserService;
@@ -86,7 +87,6 @@ public class MyUserFragment extends Fragment {
 
                     @Override
                     public void onNext(InstagramResponse<InstagramUser> instagramUserInstagramResponse) {
-                        //Do things.
                         showUserInfo(instagramUserInstagramResponse.getData());
                     }
                 });
@@ -114,6 +114,34 @@ public class MyUserFragment extends Fragment {
 
         String followedByCount = "\t" + "\t" + "\t" + String.valueOf(user.getCounts().getFollowedBy());
         mFollowedByTextView.setText(followedByCount);
+    }
+
+    private void retrieveUsersRecentMedia() {
+        InstagramUserService service = ServiceFactory.getInstagramUserService();
+        service.getUsersRecentMedia(mAccessKey)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<InstagramResponse<InstagramMedia>>() {
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("This completed");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.out.println("There was an error: ");
+                        System.out.println("There was an error: " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(InstagramResponse<InstagramMedia> instagramUserInstagramResponse) {
+                        showUsersRecentMedia(instagramUserInstagramResponse.getData());
+                    }
+                });
+    }
+
+    private void showUsersRecentMedia(InstagramMedia media) {
+
     }
 
     public void setAccessKey(String accessKey) {

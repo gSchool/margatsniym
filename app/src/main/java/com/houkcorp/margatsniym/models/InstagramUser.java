@@ -8,9 +8,7 @@ public class InstagramUser {
     private String fullName;
 
     private double id;
-
     private String bio;
-
     private InstagramCounts counts;
 
     @SerializedName("profile_picture")
