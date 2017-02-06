@@ -33,6 +33,7 @@ public class NavigationBarActivity extends AppCompatActivity {
     private InstagramLoginDialog mDialogFragment;
     private String mAccessKey;
     private MyUserFragment mMyUserFragment;
+    private FollowedUserImageList mFollowedUserImageList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +87,11 @@ public class NavigationBarActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     public void selectMenuItem(MenuItem menuItem) {
         Fragment fragment = null;
         String fragmentTag = null;
@@ -93,14 +99,13 @@ public class NavigationBarActivity extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
             case R.id.my_user:
-                fragment = getSupportFragmentManager().findFragmentByTag(MY_USER_FRAGMENT);
                 fragmentTag = MY_USER_FRAGMENT;
 
-                if (fragment == null) {
+                if (mMyUserFragment == null) {
                     mMyUserFragment = MyUserFragment.newInstance(mAccessKey);
-                    fragment = mMyUserFragment;
                 }
 
+                fragment = mMyUserFragment;
                 setActivityTitle(getString(R.string.my_user));
 
                 break;
@@ -110,9 +115,10 @@ public class NavigationBarActivity extends AppCompatActivity {
                 fragmentTag = FOLLOWING_FRAGMENT;
 
                 if (fragment == null) {
-                    fragment = FollowedUserImageList.newInstance();
+                    mFollowedUserImageList = FollowedUserImageList.newInstance();
                 }
 
+                fragment = mFollowedUserImageList;
                 setActivityTitle(getString(R.string.following));
 
                 break;

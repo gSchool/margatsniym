@@ -70,10 +70,18 @@ public class MyUserFragment extends Fragment {
 
         if (getArguments() != null) {
             mAccessKey = getArguments().getString(INSTAGRAM_ACCESS_KEY);
+        }
+
+        if (!TextUtils.isEmpty(mAccessKey)) {
             retrieveBasicUserInfo();
         }
 
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     private void retrieveBasicUserInfo() {
