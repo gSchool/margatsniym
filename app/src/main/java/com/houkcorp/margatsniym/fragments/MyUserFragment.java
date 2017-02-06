@@ -8,6 +8,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +19,8 @@ import com.houkcorp.margatsniym.models.InstagramUser;
 import com.houkcorp.margatsniym.services.InstagramUserService;
 import com.houkcorp.margatsniym.services.ServiceFactory;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +49,6 @@ public class MyUserFragment extends Fragment {
     @BindView(R.id.my_user_media_count_text_view) TextView mMediaCountTextView;
     @BindView(R.id.my_user_follows_text_view) TextView mFollowsTextView;
     @BindView(R.id.my_user_followed_by_text_view) TextView mFollowedByTextView;
-    //@BindView(R.id.my_user_gallery_card_view) CardView mGalleryCardView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,6 +116,8 @@ public class MyUserFragment extends Fragment {
 
         String followedByCount = "\t" + "\t" + "\t" + String.valueOf(user.getCounts().getFollowedBy());
         mFollowedByTextView.setText(followedByCount);
+
+        retrieveUsersRecentMedia();
     }
 
     private void retrieveUsersRecentMedia() {
@@ -121,7 +125,7 @@ public class MyUserFragment extends Fragment {
         service.getUsersRecentMedia(mAccessKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<InstagramResponse<InstagramMedia>>() {
+                .subscribe(new Subscriber<InstagramResponse<ArrayList<InstagramMedia>>>() {
                     @Override
                     public void onCompleted() {
                         System.out.println("This completed");
@@ -134,14 +138,44 @@ public class MyUserFragment extends Fragment {
                     }
 
                     @Override
-                    public void onNext(InstagramResponse<InstagramMedia> instagramUserInstagramResponse) {
+                    public void onNext(InstagramResponse<ArrayList<InstagramMedia>> instagramUserInstagramResponse) {
                         showUsersRecentMedia(instagramUserInstagramResponse.getData());
                     }
                 });
     }
 
-    private void showUsersRecentMedia(InstagramMedia media) {
+    private void showUsersRecentMedia(ArrayList<InstagramMedia> media) {
+        ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(media);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_recent_media_frame_layout, gridViewFragment).commit();
+    }
 
+    private void retrieveUsersLikedMedia() {
+        InstagramUserService service = ServiceFactory.getInstagramUserService();
+        service.getUSersLikedMedia(mAccessKey)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<InstagramResponse<ArrayList<InstagramMedia>>>() {
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("This completed");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.out.println("There was an error: ");
+                        System.out.println("There was an error: " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(InstagramResponse<ArrayList<InstagramMedia>> instagramUserInstagramResponse) {
+                        showUsersLikedMedia(instagramUserInstagramResponse.getData());
+                    }
+                });
+    }
+
+    private void showUsersLikedMedia(ArrayList<InstagramMedia> media) {
+        ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(media);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_liked_media_frame_layout, gridViewFragment).commit();
     }
 
     public void setAccessKey(String accessKey) {

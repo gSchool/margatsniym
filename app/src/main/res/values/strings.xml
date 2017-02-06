@@ -28,5 +28,6 @@
     <string name="following_header">\tFollowing:</string>
     <string name="following_you">\tFollowed by:</string>
     <string name="vertical_bar">|</string>
-    <string name="gallery">Gallery:</string>
+    <string name="recent_media">Recent Media:</string>
+    <string name="liked_media">Liked:</string>
 </resources>
