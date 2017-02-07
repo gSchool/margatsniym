@@ -11,9 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.utils.InstagramWebViewClient;
+import com.houkcorp.margatsniym.utils.NetworkUtils;
 
 public class InstagramLoginDialog extends DialogFragment {
 
@@ -31,10 +33,14 @@ public class InstagramLoginDialog extends DialogFragment {
         View root = inflater.inflate(R.layout.dialog_instagram_login, container, false);
         root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        WebView webView = (WebView) root.findViewById(R.id.login_dialog_web_view);
-        webView.setWebViewClient(new InstagramWebViewClient(this));
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("https://api.instagram.com/oauth/authorize/?client_id=" + CLIENT_ID + "&redirect_uri=" + REDIRECT_URI + "&response_type=token");
+        if (NetworkUtils.isOnline(getContext())) {
+            WebView webView = (WebView) root.findViewById(R.id.login_dialog_web_view);
+            webView.setWebViewClient(new InstagramWebViewClient(this));
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.loadUrl("https://api.instagram.com/oauth/authorize/?client_id=" + CLIENT_ID + "&redirect_uri=" + REDIRECT_URI + "&response_type=token");
+        } else {
+            Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
+        }
 
         return root;
     }

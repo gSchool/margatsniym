@@ -27,7 +27,6 @@ public class InstagramWebViewClient extends WebViewClient {
         if (url.contains(ACCESS_TOKEN)) {
             String[] splitString = url.split(ACCESS_TOKEN);
             mInstagramLoginDialog.setAccessToken(splitString[1]);
-            System.out.println("This is where we are atish: " + splitString[1]);
             EventBus.getDefault().post(new LoginEvent(splitString[1]));
         }
         return super.shouldOverrideUrlLoading(view, url);
@@ -36,7 +35,6 @@ public class InstagramWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         if (request.getUrl().toString().contains(ACCESS_TOKEN)) {
-            System.out.println("This is where we are at: " + request.getUrl().toString());
             String[] splitString = request.getUrl().toString().split(ACCESS_TOKEN);
             mInstagramLoginDialog.setAccessToken(splitString[1]);
             EventBus.getDefault().post(new LoginEvent(splitString[1]));

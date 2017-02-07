@@ -1,5 +1,6 @@
 package com.houkcorp.margatsniym.activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,10 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.dialogs.InstagramLoginDialog;
+import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
 import com.houkcorp.margatsniym.events.LoginEvent;
 import com.houkcorp.margatsniym.fragments.FollowedUserImageList;
 import com.houkcorp.margatsniym.fragments.MyUserFragment;
@@ -26,6 +29,7 @@ public class NavigationBarActivity extends AppCompatActivity {
     private static final String SELECTED_MENU_ITEM = "SELECTED_MENU_ITEM_ID";
     private static final String MY_USER_FRAGMENT = "MY_USER_FRAGMENT";
     private static final String FOLLOWING_FRAGMENT = "FOLLOWING_FRAGMENT";
+    private static final String MARGATSNIYM_PREF_NAME = "MargatsniymPrefs";
 
     private int mSelectedMenuItemId;
 
@@ -34,6 +38,7 @@ public class NavigationBarActivity extends AppCompatActivity {
     private String mAccessKey;
     private MyUserFragment mMyUserFragment;
     private FollowedUserImageList mFollowedUserImageList;
+    private boolean mAuthRunning = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +47,9 @@ public class NavigationBarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation_bar);
 
         ButterKnife.bind(this);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(MARGATSNIYM_PREF_NAME, 0);
+        mAccessKey = sharedPreferences.getString(MARGATSNIYM_PREF_NAME, "");
 
         mNavigationView = (BottomNavigationView) findViewById(R.id.bottom_nav_bar);
         mNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -59,8 +67,11 @@ public class NavigationBarActivity extends AppCompatActivity {
             fragmentTransaction.remove(currentFragment);
         }
 
-        mDialogFragment = InstagramLoginDialog.newInstance();
-        mDialogFragment.show(fragmentTransaction, "loginFrag");
+        if (TextUtils.isEmpty(mAccessKey)) {
+            mAuthRunning = true;
+            mDialogFragment = InstagramLoginDialog.newInstance();
+            mDialogFragment.show(fragmentTransaction, "loginFrag");
+        }
 
         if (savedInstanceState != null) {
             selectMenuItem(mNavigationView.getMenu().findItem(savedInstanceState.getInt(SELECTED_MENU_ITEM, 0)));
@@ -106,6 +117,7 @@ public class NavigationBarActivity extends AppCompatActivity {
                 }
 
                 fragment = mMyUserFragment;
+                mMyUserFragment.setAccessKey(mAccessKey);
                 setActivityTitle(getString(R.string.my_user));
 
                 break;
@@ -140,6 +152,28 @@ public class NavigationBarActivity extends AppCompatActivity {
         mDialogFragment.dismiss();
         mAccessKey = event.getAccessToken();
         mMyUserFragment.setAccessKey(mAccessKey);
+
+        mAuthRunning = false;
+
+        SharedPreferences sharedPreferences = getSharedPreferences(MARGATSNIYM_PREF_NAME, 0);
+        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+        prefsEditor.putString(MARGATSNIYM_PREF_NAME, mAccessKey);
+        prefsEditor.apply();
+    }
+
+    @Subscribe
+    public void onEvent(ExpiredOAuthEvent event) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        if (mDialogFragment == null) {
+            mDialogFragment = InstagramLoginDialog.newInstance();
+        }
+
+        if (!mAuthRunning){
+            fragmentTransaction.remove(mDialogFragment);
+            mAuthRunning = true;
+            mDialogFragment.show(fragmentTransaction, "loginFrag");
+        }
     }
 
     private void setActivityTitle(CharSequence text) {

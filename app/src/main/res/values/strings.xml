@@ -30,4 +30,5 @@
     <string name="vertical_bar">|</string>
     <string name="recent_media">Recent Media:</string>
     <string name="liked_media">Liked:</string>
+    <string name="not_online">You are not currently online</string>
 </resources>
