@@ -14,17 +14,17 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.houkcorp.margatsniym.R;
-import com.houkcorp.margatsniym.utils.InstagramWebViewClient;
+import com.houkcorp.margatsniym.utils.MargatsniYmWebViewClient;
 import com.houkcorp.margatsniym.utils.NetworkUtils;
 
-public class InstagramLoginDialog extends DialogFragment {
+public class LoginDialog extends DialogFragment {
 
     private static final String CLIENT_ID = "85326b79ccca4d1f8e155765dcb8a7b7";
     private static final String REDIRECT_URI = "https://houkappdevelopment.wordpress.com/";
     private String mAccessToken;
 
-    public static InstagramLoginDialog newInstance(){
-        return new InstagramLoginDialog();
+    public static LoginDialog newInstance(){
+        return new LoginDialog();
     }
 
     @Nullable
@@ -35,7 +35,7 @@ public class InstagramLoginDialog extends DialogFragment {
 
         if (NetworkUtils.isOnline(getContext())) {
             WebView webView = (WebView) root.findViewById(R.id.login_dialog_web_view);
-            webView.setWebViewClient(new InstagramWebViewClient(this));
+            webView.setWebViewClient(new MargatsniYmWebViewClient(this));
             webView.getSettings().setJavaScriptEnabled(true);
             webView.loadUrl("https://api.instagram.com/oauth/authorize/?client_id=" + CLIENT_ID + "&redirect_uri=" + REDIRECT_URI + "&response_type=token");
         } else {

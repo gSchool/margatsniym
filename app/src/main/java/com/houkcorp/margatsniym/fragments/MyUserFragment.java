@@ -1,7 +1,6 @@
 package com.houkcorp.margatsniym.fragments;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,41 +11,34 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
-import com.houkcorp.margatsniym.events.LoginEvent;
-import com.houkcorp.margatsniym.models.InstagramMedia;
-import com.houkcorp.margatsniym.models.InstagramResponse;
-import com.houkcorp.margatsniym.models.InstagramUser;
-import com.houkcorp.margatsniym.services.InstagramUserService;
+import com.houkcorp.margatsniym.models.Media;
+import com.houkcorp.margatsniym.models.MediaResponse;
+import com.houkcorp.margatsniym.models.User;
+import com.houkcorp.margatsniym.services.UserService;
 import com.houkcorp.margatsniym.services.ServiceFactory;
 import com.houkcorp.margatsniym.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
-import retrofit2.Converter;
 import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -64,6 +56,9 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private String mAccessKey;
+
+    @BindView(R.id.my_user_scroll_view) ScrollView mScrollView;
+    @BindView(R.id.my_user_progress_bar) ProgressBar mProgressBar;
 
     @BindView(R.id.my_user_swipe_refresh_layout) SwipeRefreshLayout mUserSwipeRefreshLayout;
     @BindView(R.id.my_user_image_view) ImageView mUserImageView;
@@ -103,6 +98,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         if (!TextUtils.isEmpty(mAccessKey)) {
             if (NetworkUtils.isOnline(getContext())) {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mScrollView.setVisibility(View.INVISIBLE);
                 retrieveBasicUserInfo();
             } else {
                 Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
@@ -118,11 +115,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void retrieveBasicUserInfo() {
-        final InstagramUserService service = ServiceFactory.getInstagramUserService();
+        final UserService service = ServiceFactory.getInstagramUserService();
         service.getUser(mAccessKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Response<InstagramResponse<InstagramUser>>>() {
+                .subscribe(new Subscriber<Response<MediaResponse<User>>>() {
                     @Override
                     public void onCompleted() {
                         System.out.println("This completed");
@@ -135,12 +132,12 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     }
 
                     @Override
-                    public void onNext(Response<InstagramResponse<InstagramUser>> response) {
+                    public void onNext(Response<MediaResponse<User>> response) {
                         ResponseBody errorBody = response.errorBody();
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
                                 Gson gson = new GsonBuilder().create();
-                                InstagramResponse instagramErrorResponse = gson.fromJson(errorBody.string(), InstagramResponse.class);
+                                MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
                                 Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
                                 if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException")) {
@@ -156,7 +153,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 });
     }
 
-    private void showUserInfo(InstagramUser user) {
+    private void showUserInfo(User user) {
         //TODO: Need to look at and fix the centerCrop.
         Picasso
                 .with(getContext())
@@ -195,11 +192,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void retrieveUsersRecentMedia() {
-        InstagramUserService service = ServiceFactory.getInstagramUserService();
+        UserService service = ServiceFactory.getInstagramUserService();
         service.getUsersRecentMedia(mAccessKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Response<InstagramResponse<ArrayList<InstagramMedia>>>>() {
+                .subscribe(new Subscriber<Response<MediaResponse<ArrayList<Media>>>>() {
                     @Override
                     public void onCompleted() {
                         System.out.println("This completed");
@@ -212,12 +209,12 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     }
 
                     @Override
-                    public void onNext(Response<InstagramResponse<ArrayList<InstagramMedia>>> response) {
+                    public void onNext(Response<MediaResponse<ArrayList<Media>>> response) {
                         ResponseBody errorBody = response.errorBody();
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
                                 Gson gson = new GsonBuilder().create();
-                                InstagramResponse instagramErrorResponse = gson.fromJson(errorBody.string(), InstagramResponse.class);
+                                MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
                                 Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
                                 if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException")) {
@@ -233,11 +230,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 });
     }
 
-    private void showUsersRecentMedia(ArrayList<InstagramMedia> media) {
+    private void showUsersRecentMedia(ArrayList<Media> media) {
         if (media != null && media.size() > 0) {
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
-            List<InstagramMedia> mediaSubLists = media.subList(0, maxCount);
-            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<InstagramMedia>(mediaSubLists));
+            List<Media> mediaSubLists = media.subList(0, maxCount);
+            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists));
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_recent_media_frame_layout, gridViewFragment).commit();
             mRecentMediaLinearLayout.setVisibility(View.VISIBLE);
         } else {
@@ -248,11 +245,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void retrieveUsersLikedMedia() {
-        InstagramUserService service = ServiceFactory.getInstagramUserService();
+        UserService service = ServiceFactory.getInstagramUserService();
         service.getUsersLikedMedia(mAccessKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Response<InstagramResponse<ArrayList<InstagramMedia>>>>() {
+                .subscribe(new Subscriber<Response<MediaResponse<ArrayList<Media>>>>() {
                     @Override
                     public void onCompleted() {
                         System.out.println("This completed");
@@ -265,12 +262,12 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     }
 
                     @Override
-                    public void onNext(Response<InstagramResponse<ArrayList<InstagramMedia>>> response) {
+                    public void onNext(Response<MediaResponse<ArrayList<Media>>> response) {
                         ResponseBody errorBody = response.errorBody();
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
                                 Gson gson = new GsonBuilder().create();
-                                InstagramResponse instagramErrorResponse = gson.fromJson(errorBody.string(), InstagramResponse.class);
+                                MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
                                 Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
                                 if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException")) {
@@ -286,11 +283,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 });
     }
 
-    private void showUsersLikedMedia(ArrayList<InstagramMedia> media) {
+    private void showUsersLikedMedia(ArrayList<Media> media) {
         if (media != null && media.size() > 0) {
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
-            List<InstagramMedia> mediaSubLists = media.subList(0, maxCount);
-            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<InstagramMedia>(mediaSubLists));
+            List<Media> mediaSubLists = media.subList(0, maxCount);
+            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists));
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_liked_media_frame_layout, gridViewFragment).commit();
             mLikedMediaLinearLayout.setVisibility(View.VISIBLE);
         } else {
@@ -298,6 +295,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }
 
         isSyncingData = false;
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mScrollView.setVisibility(View.VISIBLE);
         mUserSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -310,6 +309,10 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onRefresh() {
         if (!isSyncingData) {
             isSyncingData = true;
+
+            mProgressBar.setVisibility(View.VISIBLE);
+            mScrollView.setVisibility(View.INVISIBLE);
+
             mUserImageView.setImageResource(0);
             mNameTextView.setText("");
             mWebsiteTextView.setText("");

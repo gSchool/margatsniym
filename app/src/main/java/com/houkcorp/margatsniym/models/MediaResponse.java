@@ -1,15 +1,15 @@
 package com.houkcorp.margatsniym.models;
 
-public class InstagramResponse<T> {
+public class MediaResponse<T> {
     private T data;
-    private InstagramError meta;
+    private ResponseError meta;
     private ResponsePagination pagination;
 
     public T getData() {
         return data;
     }
 
-    public InstagramError getMeta() {
+    public ResponseError getMeta() {
         return meta;
     }
 

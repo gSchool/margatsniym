@@ -2,14 +2,14 @@ package com.houkcorp.margatsniym.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class InstagramUser {
+public class User {
 
     @SerializedName("full_name")
     private String fullName;
 
     private double id;
     private String bio;
-    private InstagramCounts counts;
+    private MediaCounts counts;
 
     @SerializedName("profile_picture")
     private String profilePicture;
@@ -28,7 +28,7 @@ public class InstagramUser {
         return bio;
     }
 
-    public InstagramCounts getCounts() {
+    public MediaCounts getCounts() {
         return counts;
     }
 

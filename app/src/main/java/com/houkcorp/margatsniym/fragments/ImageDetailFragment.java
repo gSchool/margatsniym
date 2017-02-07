@@ -15,7 +15,7 @@ import com.houkcorp.margatsniym.activities.ImageListActivity;
 import com.houkcorp.margatsniym.dummy.DummyContent;
 
 /**
- * A fragment representing a single InstagramUser detail screen.
+ * A fragment representing a single User detail screen.
  * This fragment is either contained in a {@link ImageListActivity}
  * in two-pane mode (on tablets) or a {@link ImageDetailActivity}
  * on handsets.

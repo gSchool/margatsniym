@@ -2,7 +2,7 @@ package com.houkcorp.margatsniym.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class InstagramCounts {
+public class MediaCounts {
     private double media;
 
     @SerializedName("followed_by")

@@ -13,7 +13,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.houkcorp.margatsniym.R;
-import com.houkcorp.margatsniym.dialogs.InstagramLoginDialog;
+import com.houkcorp.margatsniym.dialogs.LoginDialog;
 import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
 import com.houkcorp.margatsniym.events.LoginEvent;
 import com.houkcorp.margatsniym.fragments.FollowedUserImageList;
@@ -34,7 +34,7 @@ public class NavigationBarActivity extends AppCompatActivity {
     private int mSelectedMenuItemId;
 
     @BindView(R.id.bottom_nav_bar) BottomNavigationView mNavigationView;
-    private InstagramLoginDialog mDialogFragment;
+    private LoginDialog mDialogFragment;
     private String mAccessKey;
     private MyUserFragment mMyUserFragment;
     private FollowedUserImageList mFollowedUserImageList;
@@ -69,7 +69,7 @@ public class NavigationBarActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(mAccessKey)) {
             mAuthRunning = true;
-            mDialogFragment = InstagramLoginDialog.newInstance();
+            mDialogFragment = LoginDialog.newInstance();
             mDialogFragment.show(fragmentTransaction, "loginFrag");
         }
 
@@ -166,7 +166,7 @@ public class NavigationBarActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         if (mDialogFragment == null) {
-            mDialogFragment = InstagramLoginDialog.newInstance();
+            mDialogFragment = LoginDialog.newInstance();
         }
 
         if (!mAuthRunning){

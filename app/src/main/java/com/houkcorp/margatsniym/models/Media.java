@@ -3,7 +3,7 @@ package com.houkcorp.margatsniym.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class InstagramMedia implements Parcelable {
+public class Media implements Parcelable {
 
     private MediaImages images;
 
@@ -11,19 +11,19 @@ public class InstagramMedia implements Parcelable {
 
     private String type;
 
-    protected InstagramMedia(Parcel in) {
+    protected Media(Parcel in) {
         type = in.readString();
     }
 
-    public static final Creator<InstagramMedia> CREATOR = new Creator<InstagramMedia>() {
+    public static final Creator<Media> CREATOR = new Creator<Media>() {
         @Override
-        public InstagramMedia createFromParcel(Parcel in) {
-            return new InstagramMedia(in);
+        public Media createFromParcel(Parcel in) {
+            return new Media(in);
         }
 
         @Override
-        public InstagramMedia[] newArray(int size) {
-            return new InstagramMedia[size];
+        public Media[] newArray(int size) {
+            return new Media[size];
         }
     };
 

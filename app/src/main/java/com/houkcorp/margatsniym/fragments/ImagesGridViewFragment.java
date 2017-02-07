@@ -10,7 +10,7 @@ import android.widget.GridView;
 
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.adapters.ImageAdapter;
-import com.houkcorp.margatsniym.models.InstagramMedia;
+import com.houkcorp.margatsniym.models.Media;
 
 import java.util.ArrayList;
 
@@ -21,11 +21,11 @@ public class ImagesGridViewFragment extends Fragment {
     public static final String MEDIA_EXTRAS = "MEDIA_EXTRAS";
 
     private ImageAdapter mAdapter;
-    private ArrayList<InstagramMedia> mMedia = new ArrayList<>();
+    private ArrayList<Media> mMedia = new ArrayList<>();
 
     @BindView(R.id.images_grid_view) GridView mImagesGridView;
 
-    public static ImagesGridViewFragment newInstance(ArrayList<InstagramMedia> media) {
+    public static ImagesGridViewFragment newInstance(ArrayList<Media> media) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(MEDIA_EXTRAS, media);
 

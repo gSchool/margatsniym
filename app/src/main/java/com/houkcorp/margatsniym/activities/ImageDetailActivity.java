@@ -15,7 +15,7 @@ import com.houkcorp.margatsniym.fragments.ImageDetailFragment;
 import com.houkcorp.margatsniym.R;
 
 /**
- * An activity representing a single InstagramUser detail screen. This
+ * An activity representing a single User detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
  * in a {@link ImageListActivity}.

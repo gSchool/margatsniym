@@ -1,8 +1,5 @@
 package com.houkcorp.margatsniym.services;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -13,7 +10,7 @@ public class ServiceFactory {
     public static final String USER_URL =
             "https://api.instagram.com/v1/users/";
 
-    public static InstagramUserService getInstagramUserService() {
+    public static UserService getInstagramUserService() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -26,7 +23,7 @@ public class ServiceFactory {
                 .client(httpClient.build())
                 .build();
 
-        return retrofit.create(InstagramUserService.class);
+        return retrofit.create(UserService.class);
     }
 
     /*public static PhotoService getPhotoService() {

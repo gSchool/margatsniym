@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.houkcorp.margatsniym.R;
-import com.houkcorp.margatsniym.dialogs.InstagramLoginDialog;
+import com.houkcorp.margatsniym.dialogs.LoginDialog;
 import com.houkcorp.margatsniym.dummy.DummyContent;
 import com.houkcorp.margatsniym.events.LoginEvent;
 import com.houkcorp.margatsniym.fragments.ImageDetailFragment;
@@ -40,7 +40,7 @@ public class ImageListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
-    private InstagramLoginDialog mDialogFragment;
+    private LoginDialog mDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class ImageListActivity extends AppCompatActivity {
             fragmentTransaction.remove(currentFragment);
         }
 
-        mDialogFragment = InstagramLoginDialog.newInstance();
+        mDialogFragment = LoginDialog.newInstance();
         mDialogFragment.show(fragmentTransaction, "loginFrag");
     }
 

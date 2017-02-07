@@ -6,17 +6,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.houkcorp.margatsniym.models.InstagramMedia;
+import com.houkcorp.margatsniym.models.Media;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class ImageAdapter extends BaseAdapter {
-    private ArrayList<InstagramMedia> mMedia;
+    private ArrayList<Media> mMedia;
     private Context mContext;
 
-    public ImageAdapter(Context context, ArrayList<InstagramMedia> media) {
+    public ImageAdapter(Context context, ArrayList<Media> media) {
         mMedia = media;
         mContext = context;
     }
@@ -49,14 +50,21 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        InstagramMedia instagramMedia = mMedia.get(position);
+        final Media media = mMedia.get(position);
 
         Picasso
                 .with(mContext)
-                .load(instagramMedia.getImages().getThumbnail().getUrl())
+                .load(media.getImages().getThumbnail().getUrl())
                 .resize(200, 200)
                 .centerCrop()
                 .into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, media.getImages().getThumbnail().getUrl(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return imageView;
     }
@@ -65,7 +73,7 @@ public class ImageAdapter extends BaseAdapter {
         mMedia = new ArrayList<>();
     }
 
-    public void addImages(ArrayList<InstagramMedia> media) {
+    public void addImages(ArrayList<Media> media) {
         mMedia.addAll(media);
     }
 }

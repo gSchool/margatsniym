@@ -2,7 +2,7 @@ package com.houkcorp.margatsniym.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class InstagramError {
+public class ResponseError {
     @SerializedName("error_type")
     private String errorType;
 
