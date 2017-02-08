@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,8 +37,8 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ArrayList<Media> media = mFollowedUsersMedia.get(position);
-        User user = media.get(0).getUser();
+        ArrayList<Media> mediaList = mFollowedUsersMedia.get(position);
+        User user = mediaList.get(0).getUser();
 
         Picasso
                 .with(mContext)
@@ -47,6 +48,16 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
                 .into(holder.mImageView);
 
         holder.mNameTextView.setText(user.getFullName());
+
+        ImageView imageView = new ImageView(mContext);
+        Media media = mediaList.get(0);
+        Picasso
+                .with(mContext)
+                .load(media.getImages().getThumbnail().getUrl())
+                .resize(200, 200)
+                .centerCrop()
+                .into(imageView);
+        holder.mHorizontalScrollView.addView(imageView);
     }
 
     @Override
@@ -57,6 +68,7 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.followed_user_image_view) ImageView mImageView;
         @BindView(R.id.followed_user_name_text_view) TextView mNameTextView;
+        @BindView(R.id.followed_user_horizontal_scroll_view) HorizontalScrollView mHorizontalScrollView;
 
         public ViewHolder(View itemView) {
             super(itemView);
