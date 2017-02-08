@@ -11,8 +11,13 @@ public class Media implements Parcelable {
 
     private String type;
 
+    private User user;
+
     protected Media(Parcel in) {
+        images = in.readParcelable(MediaImages.class.getClassLoader());
+        videos = in.readParcelable(MediaImages.class.getClassLoader());
         type = in.readString();
+        user = in.readParcelable(User.class.getClassLoader());
     }
 
     public static final Creator<Media> CREATOR = new Creator<Media>() {
@@ -39,6 +44,10 @@ public class Media implements Parcelable {
         return type;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -46,6 +55,9 @@ public class Media implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(images, flags);
+        dest.writeParcelable(videos, flags);
         dest.writeString(type);
+        dest.writeParcelable(user, flags);
     }
 }

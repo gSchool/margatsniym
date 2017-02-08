@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -29,6 +30,17 @@ public interface UserService {
     */
     @GET("self/media/liked")
     Observable<Response<MediaResponse<ArrayList<Media>>>> getUsersLikedMedia(
+            @Query(ACCESS_TOKEN_QUERY) String accessToken
+    );
+
+    @GET("self/follows")
+    Observable<Response<MediaResponse<ArrayList<User>>>> getFollowedUsers(
+            @Query(ACCESS_TOKEN_QUERY) String accessToken
+    );
+
+    @GET("{user_id}/media/recent")
+    Observable<Response<MediaResponse<ArrayList<Media>>>> getFollowedUsersMedia(
+            @Path("user_id") long userId,
             @Query(ACCESS_TOKEN_QUERY) String accessToken
     );
 }

@@ -16,7 +16,7 @@ import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.dialogs.LoginDialog;
 import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
 import com.houkcorp.margatsniym.events.LoginEvent;
-import com.houkcorp.margatsniym.fragments.FollowedUserImageList;
+import com.houkcorp.margatsniym.fragments.FollowedUserImageListFragment;
 import com.houkcorp.margatsniym.fragments.MyUserFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,7 +37,7 @@ public class NavigationBarActivity extends AppCompatActivity {
     private LoginDialog mDialogFragment;
     private String mAccessKey;
     private MyUserFragment mMyUserFragment;
-    private FollowedUserImageList mFollowedUserImageList;
+    private FollowedUserImageListFragment mFollowedUserImageListFragment;
     private boolean mAuthRunning = false;
 
     @Override
@@ -127,10 +127,10 @@ public class NavigationBarActivity extends AppCompatActivity {
                 fragmentTag = FOLLOWING_FRAGMENT;
 
                 if (fragment == null) {
-                    mFollowedUserImageList = FollowedUserImageList.newInstance();
+                    mFollowedUserImageListFragment = FollowedUserImageListFragment.newInstance(mAccessKey);
                 }
 
-                fragment = mFollowedUserImageList;
+                fragment = mFollowedUserImageListFragment;
                 setActivityTitle(getString(R.string.following));
 
                 break;

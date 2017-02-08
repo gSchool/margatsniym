@@ -1,13 +1,16 @@
 package com.houkcorp.margatsniym.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class User implements Parcelable {
 
     @SerializedName("full_name")
     private String fullName;
 
-    private double id;
+    private long id;
     private String bio;
     private MediaCounts counts;
 
@@ -16,11 +19,31 @@ public class User {
 
     private String website;
 
+    protected User(Parcel in) {
+        fullName = in.readString();
+        id = in.readLong();
+        bio = in.readString();
+        profilePicture = in.readString();
+        website = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
     public String getFullName() {
         return fullName;
     }
 
-    public double getId() {
+    public long getId() {
         return id;
     }
 
@@ -38,5 +61,19 @@ public class User {
 
     public String getWebsite() {
         return website;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(fullName);
+        dest.writeLong(id);
+        dest.writeString(bio);
+        dest.writeString(profilePicture);
+        dest.writeString(website);
     }
 }

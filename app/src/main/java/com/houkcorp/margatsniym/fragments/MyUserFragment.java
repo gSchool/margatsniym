@@ -45,7 +45,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private static final String INSTAGRAM_ACCESS_KEY = "INSTAGRAM_ACCESS_KEY";
+    public static final String INSTAGRAM_ACCESS_KEY = "INSTAGRAM_ACCESS_KEY";
 
     public static MyUserFragment newInstance(String accessToken) {
         MyUserFragment myUserFragment = new MyUserFragment();
@@ -115,7 +115,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void retrieveBasicUserInfo() {
-        final UserService service = ServiceFactory.getInstagramUserService();
+        UserService service = ServiceFactory.getInstagramUserService();
         service.getUser(mAccessKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -196,6 +196,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         service.getUsersRecentMedia(mAccessKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .take(20)
                 .subscribe(new Subscriber<Response<MediaResponse<ArrayList<Media>>>>() {
                     @Override
                     public void onCompleted() {
@@ -249,6 +250,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         service.getUsersLikedMedia(mAccessKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .take(20)
                 .subscribe(new Subscriber<Response<MediaResponse<ArrayList<Media>>>>() {
                     @Override
                     public void onCompleted() {
