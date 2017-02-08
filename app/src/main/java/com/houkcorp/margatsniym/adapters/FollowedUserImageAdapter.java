@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.houkcorp.margatsniym.R;
@@ -20,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserImageAdapter.ViewHolder> {
+    private static final int MAX_USER_IMAGES_SIZE = 5;
+
     private ArrayList<ArrayList<Media>> mFollowedUsersMedia = new ArrayList<>();
     private Context mContext;
 
@@ -49,15 +51,21 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
 
         holder.mNameTextView.setText(user.getFullName());
 
-        ImageView imageView = new ImageView(mContext);
-        Media media = mediaList.get(0);
-        Picasso
-                .with(mContext)
-                .load(media.getImages().getThumbnail().getUrl())
-                .resize(200, 200)
-                .centerCrop()
-                .into(imageView);
-        holder.mHorizontalScrollView.addView(imageView);
+        int maxCount = mediaList.size() < 5 ? mediaList.size() : MAX_USER_IMAGES_SIZE;
+        for (int i = 0; i < maxCount; i++) {
+            ImageView imageView = new ImageView(mContext);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(5, 5, 5, 5);
+            imageView.setLayoutParams(layoutParams);
+            Media media = mediaList.get(i);
+            Picasso
+                    .with(mContext)
+                    .load(media.getImages().getThumbnail().getUrl())
+                    .resize(200, 200)
+                    .centerCrop()
+                    .into(imageView);
+            holder.mUserImagesLinearLayout.addView(imageView);
+        }
     }
 
     @Override
@@ -65,12 +73,12 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
         return mFollowedUsersMedia.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.followed_user_image_view) ImageView mImageView;
         @BindView(R.id.followed_user_name_text_view) TextView mNameTextView;
-        @BindView(R.id.followed_user_horizontal_scroll_view) HorizontalScrollView mHorizontalScrollView;
+        @BindView(R.id.followed_user_linear_layout) LinearLayout mUserImagesLinearLayout;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
