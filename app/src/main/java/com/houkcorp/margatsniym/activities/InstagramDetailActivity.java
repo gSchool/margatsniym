@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.houkcorp.margatsniym.R;
@@ -16,6 +19,7 @@ import com.houkcorp.margatsniym.models.Media;
 
 public class InstagramDetailActivity extends AppCompatActivity {
     public static final String MEDIA_EXTRA = "MEDIA_EXTRA";
+    public static final String INSTAGRAM_DETAIL_FRAGMENT = "INSTAGRAM_DETAIL_FRAGMENT";
 
     public static Intent newIntent(Context context, Media media) {
         Intent intent = new Intent(context, InstagramDetailActivity.class);
@@ -42,11 +46,24 @@ public class InstagramDetailActivity extends AppCompatActivity {
         }
 
         InstagramDetailFragment instagramDetailFragment = InstagramDetailFragment.newInstance(media);
-
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.detail_view_frame_layout, instagramDetailFragment, INSTAGRAM_DETAIL_FRAGMENT).commit();
     }
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
         return super.onCreateView(parent, name, context, attrs);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

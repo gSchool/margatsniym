@@ -1,6 +1,7 @@
 package com.houkcorp.margatsniym.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,6 +9,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.houkcorp.margatsniym.activities.InstagramDetailActivity;
 import com.houkcorp.margatsniym.models.Media;
 import com.squareup.picasso.Picasso;
 
@@ -38,7 +40,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, final View convertView, ViewGroup parent) {
         ImageView imageView;
 
         if (convertView == null) {
@@ -63,7 +65,8 @@ public class ImageAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, media.getImages().getThumbnail().getUrl(), Toast.LENGTH_SHORT).show();
+                Intent intent = InstagramDetailActivity.newIntent(mContext, media);
+                mContext.startActivity(intent);
             }
         });
 

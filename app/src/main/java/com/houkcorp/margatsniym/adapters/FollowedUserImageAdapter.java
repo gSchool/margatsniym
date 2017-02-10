@@ -1,6 +1,7 @@
 package com.houkcorp.margatsniym.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.houkcorp.margatsniym.R;
+import com.houkcorp.margatsniym.activities.InstagramDetailActivity;
 import com.houkcorp.margatsniym.models.Media;
 import com.houkcorp.margatsniym.models.User;
 import com.squareup.picasso.Picasso;
@@ -62,13 +64,22 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(5, 5, 5, 5);
             imageView.setLayoutParams(layoutParams);
-            Media media = mediaList.get(i);
+            final Media media = mediaList.get(i);
             Picasso
                     .with(mContext)
                     .load(media.getImages().getThumbnail().getUrl())
                     .resize(200, 200)
                     .centerCrop()
                     .into(imageView);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = InstagramDetailActivity.newIntent(mContext, media);
+                    mContext.startActivity(intent);
+                }
+            });
+
             holder.mUserImagesLinearLayout.addView(imageView);
         }
     }
