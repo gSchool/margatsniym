@@ -41,6 +41,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+/**
+ * A Recycler view of max 20 users and max 5 images that are followed by the logged in user.
+ */
 public class FollowedUserImageListFragment extends Fragment {
     ArrayList<ArrayList<Media>> mFollowedUsersMedia = new ArrayList<>();
 
@@ -48,6 +51,12 @@ public class FollowedUserImageListFragment extends Fragment {
     @BindView(R.id.followed_users_progress_bar) ProgressBar mFollowedProgressBar;
     private FollowedUserImageAdapter mFollowedRecyclerAdapter;
 
+    /**
+     * Retrieve a new instance of FollowedUserImageListFragment
+     *
+     * @param accessKey The access key of the logged in user.
+     * @return Returns a new instance of FollowedUserImageListFragment
+     */
     public static FollowedUserImageListFragment newInstance(String accessKey) {
         Bundle extras = new Bundle();
         extras.putString(MyUserFragment.INSTAGRAM_ACCESS_KEY, accessKey);
@@ -67,6 +76,7 @@ public class FollowedUserImageListFragment extends Fragment {
 
         ButterKnife.bind(this, root);
 
+        // HIde the recycler view and show the progress bar.
         mFollowedProgressBar.setVisibility(View.VISIBLE);
         mFollowedRecyclerView.setVisibility(View.GONE);
 
@@ -77,8 +87,6 @@ public class FollowedUserImageListFragment extends Fragment {
         mFollowedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mFollowedRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        //mFollowedRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-
         mFollowedRecyclerAdapter = new FollowedUserImageAdapter(getContext(), new ArrayList<ArrayList<Media>>());
         mFollowedRecyclerView.setAdapter(mFollowedRecyclerAdapter);
 
@@ -87,6 +95,9 @@ public class FollowedUserImageListFragment extends Fragment {
         return root;
     }
 
+    /**
+     * Uses the User Service to retrieve all users and media from the Instagram API.
+     */
     private void retrieveFollowedMedia() {
         final UserService service = ServiceFactory.getInstagramUserService();
         service.getFollowedUsers(mAccessKey)
@@ -120,6 +131,7 @@ public class FollowedUserImageListFragment extends Fragment {
                     @Override
                     public void onNext(Response<MediaResponse<ArrayList<Media>>> response) {
                         ResponseBody errorBody = response.errorBody();
+                        // Look for error responses from the Instagram API
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
                                 Gson gson = new GsonBuilder().create();
@@ -133,18 +145,27 @@ public class FollowedUserImageListFragment extends Fragment {
                                 Log.e("MyUserFragment", "There was a problem parsing the error response.");
                             }
                         } else {
+                            //If no errors, post the results.
                             addFollowedUsersMedia(response.body().getData());
                         }
                     }
                 });
     }
 
+    /**
+     * Adds the users returned media to an ArrayList.
+     *
+     * @param data The List of returned media.
+     */
     private void addFollowedUsersMedia(ArrayList<Media> data) {
         if (data != null && data.size() > 0) {
             mFollowedUsersMedia.add(data);
         }
     }
 
+    /**
+     * Adds the media to the Adapter and displays it in the RecyclerView.
+     */
     private void showFollowedUserMediaList() {
         if (mFollowedUsersMedia != null && mFollowedUsersMedia.size() > 0) {
             mFollowedRecyclerAdapter.addFollowedUsers(mFollowedUsersMedia);
@@ -152,23 +173,5 @@ public class FollowedUserImageListFragment extends Fragment {
 
         mFollowedRecyclerView.setVisibility(View.VISIBLE);
         mFollowedProgressBar.setVisibility(View.GONE);
-    }
-
-    private class UserMediaHolder {
-        private Observable<Response<MediaResponse<ArrayList<Media>>>> medialReturn;
-        private User user;
-
-        public UserMediaHolder(Observable<Response<MediaResponse<ArrayList<Media>>>> medialReturn, User user) {
-            this.medialReturn = medialReturn;
-            this.user = user;
-        }
-
-        public Observable<Response<MediaResponse<ArrayList<Media>>>> getMedialReturn() {
-            return medialReturn;
-        }
-
-        public User getUser() {
-            return user;
-        }
     }
 }

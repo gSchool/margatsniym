@@ -25,6 +25,10 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * The bas activity for Margatsnimy.  This holds the Bottom Navigation Bar and handles the changes
+ * in Fragment views.
+ */
 public class NavigationBarActivity extends AppCompatActivity {
     private static final String SELECTED_MENU_ITEM = "SELECTED_MENU_ITEM_ID";
     private static final String MY_USER_FRAGMENT = "MY_USER_FRAGMENT";
@@ -48,9 +52,11 @@ public class NavigationBarActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        // Retrieve the access code from Shared Prefs.
         SharedPreferences sharedPreferences = getSharedPreferences(MARGATSNIYM_PREF_NAME, 0);
         mAccessKey = sharedPreferences.getString(MARGATSNIYM_PREF_NAME, "");
 
+        // Builds the bottom navigation drawer on the view.
         mNavigationView = (BottomNavigationView) findViewById(R.id.bottom_nav_bar);
         mNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -61,18 +67,21 @@ public class NavigationBarActivity extends AppCompatActivity {
             }
         });
 
+        // If the old login dialog is up, find and kill it.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("loginFrag");
         if (currentFragment != null) {
             fragmentTransaction.remove(currentFragment);
         }
 
+        // Test the retrieved access key.  If empty launch the login dialog.
         if (TextUtils.isEmpty(mAccessKey)) {
             mAuthRunning = true;
             mDialogFragment = LoginDialog.newInstance();
             mDialogFragment.show(fragmentTransaction, "loginFrag");
         }
 
+        // Launch the menu
         if (savedInstanceState != null) {
             selectMenuItem(mNavigationView.getMenu().findItem(savedInstanceState.getInt(SELECTED_MENU_ITEM, 0)));
         } else {
@@ -103,6 +112,54 @@ public class NavigationBarActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    /**
+     * Catches the login and saves the Access Key to shared Prefs.
+     *
+     * @param event The event being returned.  Holds the Access Key.
+     */
+    @Subscribe
+    public void onEvent(LoginEvent event){
+        // Dismiss the dialog.
+        mDialogFragment.dismiss();
+        mAccessKey = event.getAccessToken();
+        mMyUserFragment.setAccessKey(mAccessKey);
+
+        mAuthRunning = false;
+
+        // Store the access key for later user.  Not the safest way to store, but ok for my purposes.
+        SharedPreferences sharedPreferences = getSharedPreferences(MARGATSNIYM_PREF_NAME, 0);
+        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+        prefsEditor.putString(MARGATSNIYM_PREF_NAME, mAccessKey);
+        prefsEditor.apply();
+    }
+
+    /**
+     * Receives a notice if the access token has expired.
+     *
+     * @param event Failed Oauth event.
+     */
+    @Subscribe
+    public void onEvent(ExpiredOAuthEvent event) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        // If the Dialog has not been created.  Create one.
+        if (mDialogFragment == null) {
+            mDialogFragment = LoginDialog.newInstance();
+        }
+
+        // If not currently updating token, Launch login dialog.
+        if (!mAuthRunning){
+            fragmentTransaction.remove(mDialogFragment);
+            mAuthRunning = true;
+            mDialogFragment.show(fragmentTransaction, "loginFrag");
+        }
+    }
+
+    /**
+     * Assigns the correct Fragment to the view.
+     *
+     * @param menuItem The selected item.
+     */
     public void selectMenuItem(MenuItem menuItem) {
         Fragment fragment = null;
         String fragmentTag = null;
@@ -116,6 +173,7 @@ public class NavigationBarActivity extends AppCompatActivity {
                     mMyUserFragment = MyUserFragment.newInstance(mAccessKey);
                 }
 
+                // If fragment does not exist, create a new one.
                 fragment = mMyUserFragment;
                 mMyUserFragment.setAccessKey(mAccessKey);
                 setActivityTitle(getString(R.string.my_user));
@@ -140,6 +198,7 @@ public class NavigationBarActivity extends AppCompatActivity {
 
         menuItem.setChecked(true);
 
+        // Add the fragment to the view.
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.navigation_bar_frame_layout, fragment, fragmentTag);
@@ -147,35 +206,11 @@ public class NavigationBarActivity extends AppCompatActivity {
         }
     }
 
-    @Subscribe
-    public void onEvent(LoginEvent event){
-        mDialogFragment.dismiss();
-        mAccessKey = event.getAccessToken();
-        mMyUserFragment.setAccessKey(mAccessKey);
-
-        mAuthRunning = false;
-
-        SharedPreferences sharedPreferences = getSharedPreferences(MARGATSNIYM_PREF_NAME, 0);
-        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-        prefsEditor.putString(MARGATSNIYM_PREF_NAME, mAccessKey);
-        prefsEditor.apply();
-    }
-
-    @Subscribe
-    public void onEvent(ExpiredOAuthEvent event) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-        if (mDialogFragment == null) {
-            mDialogFragment = LoginDialog.newInstance();
-        }
-
-        if (!mAuthRunning){
-            fragmentTransaction.remove(mDialogFragment);
-            mAuthRunning = true;
-            mDialogFragment.show(fragmentTransaction, "loginFrag");
-        }
-    }
-
+    /**
+     * Sets the Activities title for the selected menu item.
+     *
+     * @param text The title to be displayed.
+     */
     private void setActivityTitle(CharSequence text) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

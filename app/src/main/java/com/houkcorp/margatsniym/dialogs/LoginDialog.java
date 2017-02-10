@@ -17,6 +17,9 @@ import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.utils.MargatsniYmWebViewClient;
 import com.houkcorp.margatsniym.utils.NetworkUtils;
 
+/**
+ * Launches a Login Dialog.  Shows the Instagram Login inside of a Web View.
+ */
 public class LoginDialog extends DialogFragment {
 
     private static final String CLIENT_ID = "85326b79ccca4d1f8e155765dcb8a7b7";
@@ -33,6 +36,7 @@ public class LoginDialog extends DialogFragment {
         View root = inflater.inflate(R.layout.dialog_instagram_login, container, false);
         root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
+        // If online, launch the Web View to display the login.
         if (NetworkUtils.isOnline(getContext())) {
             WebView webView = (WebView) root.findViewById(R.id.login_dialog_web_view);
             webView.setWebViewClient(new MargatsniYmWebViewClient(this));
@@ -65,6 +69,11 @@ public class LoginDialog extends DialogFragment {
         super.onDismiss(dialog);
     }
 
+    /**
+     * Set the access token
+     *
+     * @param token The access token being passed.
+     */
     public void setAccessToken(String token) {
         mAccessToken = token;
     }

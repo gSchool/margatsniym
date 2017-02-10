@@ -1,3 +1,4 @@
+/*
 package com.houkcorp.margatsniym.activities;
 
 import android.content.Context;
@@ -16,15 +17,13 @@ import android.widget.TextView;
 
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.dialogs.LoginDialog;
-import com.houkcorp.margatsniym.dummy.DummyContent;
 import com.houkcorp.margatsniym.events.LoginEvent;
 import com.houkcorp.margatsniym.fragments.ImageDetailFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.List;
-
+*/
 /**
  * An activity representing a list of InstagramUsers. This activity
  * has different presentations for handset and tablet-size devices. On
@@ -32,13 +31,16 @@ import java.util.List;
  * lead to a {@link ImageDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
- */
+ *//*
+
 public class ImageListActivity extends AppCompatActivity {
 
-    /**
+    */
+/**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
-     */
+     *//*
+
     private boolean mTwoPane;
     private LoginDialog mDialogFragment;
 
@@ -51,17 +53,20 @@ public class ImageListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        */
+/*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });*/
+        });*//*
+
 
         //Add back when you get to this point.
-        /*View recyclerView = findViewById(R.id.instagramuser_list);
+        */
+/*View recyclerView = findViewById(R.id.instagramuser_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
@@ -71,7 +76,8 @@ public class ImageListActivity extends AppCompatActivity {
             // If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
-        }*/
+        }*//*
+
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("loginFrag");
@@ -174,4 +180,4 @@ public class ImageListActivity extends AppCompatActivity {
 
 
     }
-}
+}*/

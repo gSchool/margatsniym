@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * A reusable fragment for displaynig a list of images.
+ */
 public class ImagesGridViewFragment extends Fragment {
     public static final String MEDIA_EXTRAS = "MEDIA_EXTRAS";
 
@@ -51,6 +54,7 @@ public class ImagesGridViewFragment extends Fragment {
             mMedia = getArguments().getParcelableArrayList(MEDIA_EXTRAS);
         }
 
+        //Adding the adapter
         mAdapter = new ImageAdapter(getActivity(), mMedia);
         mImagesGridView.setAdapter(mAdapter);
 

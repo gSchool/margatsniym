@@ -11,11 +11,19 @@ import com.houkcorp.margatsniym.events.LoginEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+/**
+ * A WebClient for displaying a list of images from Instagram for a User.
+ */
 public class MargatsniYmWebViewClient extends android.webkit.WebViewClient {
     private static final String ACCESS_TOKEN = "access_token=";
 
     private LoginDialog mLoginDialog;
 
+    /**
+     * The web client for showing the login view.
+     *
+     * @param loginDialog The dialog that called the WebClient
+     */
     public MargatsniYmWebViewClient(LoginDialog loginDialog) {
         super();
         mLoginDialog = loginDialog;

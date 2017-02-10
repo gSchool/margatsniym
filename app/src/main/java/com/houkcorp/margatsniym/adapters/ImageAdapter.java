@@ -59,6 +59,7 @@ public class ImageAdapter extends BaseAdapter {
                 .centerCrop()
                 .into(imageView);
 
+        // Launches a detail view of the selected image.
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,13 +68,5 @@ public class ImageAdapter extends BaseAdapter {
         });
 
         return imageView;
-    }
-
-    public void clearImages() {
-        mMedia = new ArrayList<>();
-    }
-
-    public void addImages(ArrayList<Media> media) {
-        mMedia.addAll(media);
     }
 }

@@ -44,6 +44,9 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * This Fragment displays the basic info for an Instagram User.
+ */
 public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final String INSTAGRAM_ACCESS_KEY = "INSTAGRAM_ACCESS_KEY";
 
@@ -96,6 +99,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         mUserSwipeRefreshLayout.setOnRefreshListener(this);
 
+        // If Access Key exists and is online get the info and load the view
         if (!TextUtils.isEmpty(mAccessKey)) {
             if (NetworkUtils.isOnline(getContext())) {
                 mProgressBar.setVisibility(View.VISIBLE);
@@ -114,6 +118,9 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Fetches the basic info from the Instagram Server
+     */
     private void retrieveBasicUserInfo() {
         UserService service = ServiceFactory.getInstagramUserService();
         service.getUser(mAccessKey)
@@ -133,6 +140,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onNext(Response<MediaResponse<User>> response) {
+                        // Looks for instagram error response.
                         ResponseBody errorBody = response.errorBody();
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
@@ -153,6 +161,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 });
     }
 
+    /**
+     * Show the returned user info.
+     *
+     * @param user THe user returned from the server.
+     */
     private void showUserInfo(User user) {
         //TODO: Need to look at and fix the centerCrop.
         Picasso
@@ -191,6 +204,9 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         retrieveUsersRecentMedia();
     }
 
+    /**
+     * Fetch the Users recently posted media, from the server.  Fetch at max 20.
+     */
     private void retrieveUsersRecentMedia() {
         UserService service = ServiceFactory.getInstagramUserService();
         service.getUsersRecentMedia(mAccessKey)
@@ -231,6 +247,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 });
     }
 
+    /**
+     * Display the list of returned recent media.
+     *
+     * @param media The media returned from the Instagram API's
+     */
     private void showUsersRecentMedia(ArrayList<Media> media) {
         if (media != null && media.size() > 0) {
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
@@ -245,6 +266,9 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         retrieveUsersLikedMedia();
     }
 
+    /**
+     * Fetches all media the user has liked.  Fetches at max 20.
+     */
     private void retrieveUsersLikedMedia() {
         UserService service = ServiceFactory.getInstagramUserService();
         service.getUsersLikedMedia(mAccessKey)
@@ -285,11 +309,17 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 });
     }
 
+    /**
+     * Displays the liked media.
+     *
+     * @param media The media returned from Instagram API's
+     */
     private void showUsersLikedMedia(ArrayList<Media> media) {
         if (media != null && media.size() > 0) {
+            // Just a sanity check for now to make sure only 20 come back.
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
             List<Media> mediaSubLists = media.subList(0, maxCount);
-            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists));
+            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists));
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_liked_media_frame_layout, gridViewFragment).commit();
             mLikedMediaLinearLayout.setVisibility(View.VISIBLE);
         } else {
@@ -302,11 +332,20 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mUserSwipeRefreshLayout.setRefreshing(false);
     }
 
+    /**
+     * Sets the Access Key of the fragment
+     *
+     * @param accessKey The Instagram Access Key
+     */
     public void setAccessKey(String accessKey) {
         mAccessKey = accessKey;
         retrieveBasicUserInfo();
     }
 
+    /**
+     * This is called when the user pulls down to refresh the page.  This will clear and reacquire
+     * all data.
+     */
     @Override
     public void onRefresh() {
         if (!isSyncingData) {

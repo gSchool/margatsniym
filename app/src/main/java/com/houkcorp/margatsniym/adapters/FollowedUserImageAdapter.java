@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * The Followed users Recycler View Adapter.  THis will hold the individual users that the logged
+ * in user is following.
+ */
 public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserImageAdapter.ViewHolder> {
     private static final int MAX_USER_IMAGES_SIZE = 5;
 
@@ -51,6 +55,7 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
 
         holder.mNameTextView.setText(user.getFullName());
 
+        // Adds at max 5 images that the followed users have pushed up.
         int maxCount = mediaList.size() < 5 ? mediaList.size() : MAX_USER_IMAGES_SIZE;
         for (int i = 0; i < maxCount; i++) {
             ImageView imageView = new ImageView(mContext);
@@ -85,6 +90,11 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
         }
     }
 
+    /**
+     * Used for adding followed users to the ArrayList.  Clears before adding.
+     *
+     * @param followedUserMedia They ArrayList of ArrayLists for media.
+     */
     public void addFollowedUsers(ArrayList<ArrayList<Media>> followedUserMedia) {
         mFollowedUsersMedia.clear();
         mFollowedUsersMedia.addAll(followedUserMedia);

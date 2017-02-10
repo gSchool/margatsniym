@@ -1,5 +1,8 @@
 package com.houkcorp.margatsniym.events;
 
+/**
+ * An event that launches when OAuth fails.
+ */
 public class ExpiredOAuthEvent {
     private boolean expired;
 

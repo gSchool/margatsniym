@@ -1,3 +1,4 @@
+/*
 package com.houkcorp.margatsniym.activities;
 
 import android.content.Context;
@@ -11,15 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import com.houkcorp.margatsniym.fragments.ImageDetailFragment;
 import com.houkcorp.margatsniym.R;
 
+*/
 /**
  * An activity representing a single User detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
  * in a {@link ImageListActivity}.
- */
+ *//*
+
 public class ImageDetailActivity extends AppCompatActivity {
 
     public static Intent newIntent(Context context) {
@@ -86,4 +88,4 @@ public class ImageDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-}
+}*/

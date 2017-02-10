@@ -1,3 +1,4 @@
+/*
 package com.houkcorp.margatsniym.fragments;
 
 import android.app.Activity;
@@ -12,30 +13,38 @@ import android.widget.TextView;
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.activities.ImageDetailActivity;
 import com.houkcorp.margatsniym.activities.ImageListActivity;
-import com.houkcorp.margatsniym.dummy.DummyContent;
+import com.houkcorp.margatsniym.dummy.DummyContent;DummyContent
 
+*/
 /**
  * A fragment representing a single User detail screen.
  * This fragment is either contained in a {@link ImageListActivity}
  * in two-pane mode (on tablets) or a {@link ImageDetailActivity}
  * on handsets.
- */
+ *//*
+
 public class ImageDetailFragment extends Fragment {
-    /**
+    */
+/**
      * The fragment argument representing the item ID that this fragment
      * represents.
-     */
+     *//*
+
     public static final String ARG_ITEM_ID = "item_id";
 
-    /**
+    */
+/**
      * The dummy content this fragment is presenting.
-     */
+     *//*
+
     private DummyContent.DummyItem mItem;
 
-    /**
+    */
+/**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
-     */
+     *//*
+
     public ImageDetailFragment() {
     }
 
@@ -70,3 +79,4 @@ public class ImageDetailFragment extends Fragment {
         return rootView;
     }
 }
+*/
