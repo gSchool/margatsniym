@@ -18,23 +18,24 @@ public class MediaImages implements Parcelable {
 
     private MediaImagesMeta thumbnail;
 
-    public MediaImagesMeta getStandardResolution() {
-        return standardResolution;
-    }
-
-    public MediaImagesMeta getLowResolution() {
-        return lowResolution;
-    }
-
-    public MediaImagesMeta getLowBandwidth() {
-        return lowBandwidth;
-    }
-
-    public MediaImagesMeta getThumbnail() {
-        return thumbnail;
-    }
-
     protected MediaImages(Parcel in) {
+        standardResolution = in.readParcelable(MediaImagesMeta.class.getClassLoader());
+        lowResolution = in.readParcelable(MediaImagesMeta.class.getClassLoader());
+        lowBandwidth = in.readParcelable(MediaImagesMeta.class.getClassLoader());
+        thumbnail = in.readParcelable(MediaImagesMeta.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(standardResolution, flags);
+        dest.writeParcelable(lowResolution, flags);
+        dest.writeParcelable(lowBandwidth, flags);
+        dest.writeParcelable(thumbnail, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<MediaImages> CREATOR = new Creator<MediaImages>() {
@@ -49,12 +50,19 @@ public class MediaImages implements Parcelable {
         }
     };
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public MediaImagesMeta getStandardResolution() {
+        return standardResolution;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public MediaImagesMeta getLowResolution() {
+        return lowResolution;
+    }
+
+    public MediaImagesMeta getLowBandwidth() {
+        return lowBandwidth;
+    }
+
+    public MediaImagesMeta getThumbnail() {
+        return thumbnail;
     }
 }
