@@ -36,7 +36,7 @@ public interface UserService {
             @Query(ACCESS_TOKEN_QUERY) String accessToken
     );
 
-    @GET("/users/self/follows")
+    @GET("users/self/follows")
     Observable<Response<MediaResponse<ArrayList<User>>>> getFollowedUsers(
             @Query(ACCESS_TOKEN_QUERY) String accessToken
     );

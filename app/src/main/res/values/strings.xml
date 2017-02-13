@@ -34,6 +34,7 @@
 
     <string name="vertical_bar">|</string>
     <string name="unliked">Unliked Icon</string>
+    <string name="user_thumbnail">Users thumbnail image</string>
 
     <string-array name="multi_select_list_preference_default_value" />
 </resources>

@@ -4,20 +4,20 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class LocationInfo implements Parcelable {
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
     private String name;
 
     protected LocationInfo(Parcel in) {
-        latitude = in.readFloat();
-        longitude = in.readFloat();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
         name = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeFloat(latitude);
-        dest.writeFloat(longitude);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
         dest.writeString(name);
     }
 
@@ -38,11 +38,11 @@ public class LocationInfo implements Parcelable {
         }
     };
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 

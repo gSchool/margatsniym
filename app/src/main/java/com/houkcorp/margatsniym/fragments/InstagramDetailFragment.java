@@ -1,5 +1,7 @@
 package com.houkcorp.margatsniym.fragments;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -27,11 +30,15 @@ import com.houkcorp.margatsniym.models.Media;
 import com.houkcorp.margatsniym.models.MediaResponse;
 import com.houkcorp.margatsniym.services.ServiceFactory;
 import com.houkcorp.margatsniym.services.UserService;
+import com.houkcorp.margatsniym.transformations.CircleTransformation;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,11 +53,15 @@ public class InstagramDetailFragment extends Fragment {
     private String mAccessToken;
 
     @BindView(R.id.image_detail_scroll_view) ScrollView mDetailScrollView;
+    @BindView(R.id.image_detail_users_image_view) ImageView mDetailUsersImageView;
+    @BindView(R.id.image_detail_users_text_view) TextView mDetailUsersTextView;
     @BindView(R.id.image_detail_image_view) ImageView mDetailImageView;
     @BindView(R.id.image_detail_video_view) VideoView mDetailVideoView;
     @BindView(R.id.image_detail_progress_bar) ProgressBar mDetailProgressBar;
     @BindView(R.id.image_detail_liked_image_view) ImageView mDetailLikedImageView;
     @BindView(R.id.image_detail_unliked_image_view) ImageView mDetailUnLikedImageView;
+    @BindView(R.id.image_detail_address_line_one) TextView mDetailAddressLineOne;
+    @BindView(R.id.image_detail_address_line_two) TextView mDetailAddressLineTwo;
 
     public static InstagramDetailFragment newInstance(Media media, String accessToken) {
         Bundle extras = new Bundle();
@@ -79,6 +90,14 @@ public class InstagramDetailFragment extends Fragment {
         if (!TextUtils.isEmpty(mMedia.getCaption().getText())) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mMedia.getCaption().getText());
         }
+
+        Picasso
+                .with(getContext())
+                .load(mMedia.getUser().getProfilePicture())
+                .transform(new CircleTransformation())
+                .into(mDetailUsersImageView);
+
+        mDetailUsersTextView.setText(mMedia.getUser().getFullName());
 
         if (mMedia.getType().equals("image")) {
             Picasso
@@ -119,6 +138,35 @@ public class InstagramDetailFragment extends Fragment {
                 likeMedia();
             }
         });
+
+        if (mMedia.getLocation() != null) {
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+            List<Address> addresses = null;
+            try {
+                addresses = geocoder.getFromLocation(mMedia.getLocation().getLatitude(), mMedia.getLocation().getLongitude(), 1);
+            } catch (IOException e) {
+                Log.e("InstagramDetailFragment", e.getLocalizedMessage());
+            }
+
+            if (addresses != null && addresses.size() > 0) {
+                Address address = addresses.get(0);
+                ArrayList<String> addressparts = new ArrayList<>();
+
+                // Fetch the address lines using getAddressLine,
+                // join them, and send them to the thread.
+                for(int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                    addressparts.add(address.getAddressLine(i));
+                }
+
+                if (addressparts.size() > 0) {
+                    mDetailAddressLineOne.setText(addressparts.get(0));
+                }
+
+                if (addressparts.size() > 1) {
+                    mDetailAddressLineTwo.setText(addressparts.get(1));
+                }
+            }
+        }
 
         mDetailProgressBar.setVisibility(View.GONE);
         mDetailScrollView.setVisibility(View.VISIBLE);
