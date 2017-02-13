@@ -48,17 +48,17 @@ import rx.schedulers.Schedulers;
  * This Fragment displays the basic info for an Instagram User.
  */
 public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    public static final String INSTAGRAM_ACCESS_KEY = "INSTAGRAM_ACCESS_KEY";
+    public static final String INSTAGRAM_ACCESS_TOKEN = "INSTAGRAM_ACCESS_TOKEN";
 
     public static MyUserFragment newInstance(String accessToken) {
         MyUserFragment myUserFragment = new MyUserFragment();
         Bundle args = new Bundle();
-        args.putString(INSTAGRAM_ACCESS_KEY, accessToken);
+        args.putString(INSTAGRAM_ACCESS_TOKEN, accessToken);
 
         return myUserFragment;
     }
 
-    private String mAccessKey;
+    private String mAccessToken;
 
     @BindView(R.id.my_user_scroll_view) ScrollView mScrollView;
     @BindView(R.id.my_user_progress_bar) ProgressBar mProgressBar;
@@ -94,13 +94,13 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         ButterKnife.bind(this, root);
 
         if (getArguments() != null) {
-            mAccessKey = getArguments().getString(INSTAGRAM_ACCESS_KEY);
+            mAccessToken = getArguments().getString(INSTAGRAM_ACCESS_TOKEN);
         }
 
         mUserSwipeRefreshLayout.setOnRefreshListener(this);
 
         // If Access Key exists and is online get the info and load the view
-        if (!TextUtils.isEmpty(mAccessKey)) {
+        if (!TextUtils.isEmpty(mAccessToken)) {
             if (NetworkUtils.isOnline(getContext())) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 mScrollView.setVisibility(View.INVISIBLE);
@@ -123,7 +123,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
      */
     private void retrieveBasicUserInfo() {
         UserService service = ServiceFactory.getInstagramUserService();
-        service.getUser(mAccessKey)
+        service.getUser(mAccessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Response<MediaResponse<User>>>() {
@@ -209,7 +209,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
      */
     private void retrieveUsersRecentMedia() {
         UserService service = ServiceFactory.getInstagramUserService();
-        service.getUsersRecentMedia(mAccessKey)
+        service.getUsersRecentMedia(mAccessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .take(20)
@@ -256,7 +256,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         if (media != null && media.size() > 0) {
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
             List<Media> mediaSubLists = media.subList(0, maxCount);
-            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists));
+            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists), mAccessToken);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_recent_media_frame_layout, gridViewFragment).commit();
             mRecentMediaLinearLayout.setVisibility(View.VISIBLE);
         } else {
@@ -271,7 +271,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
      */
     private void retrieveUsersLikedMedia() {
         UserService service = ServiceFactory.getInstagramUserService();
-        service.getUsersLikedMedia(mAccessKey)
+        service.getUsersLikedMedia(mAccessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .take(20)
@@ -319,7 +319,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
             // Just a sanity check for now to make sure only 20 come back.
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
             List<Media> mediaSubLists = media.subList(0, maxCount);
-            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists));
+            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists), mAccessToken);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_liked_media_frame_layout, gridViewFragment).commit();
             mLikedMediaLinearLayout.setVisibility(View.VISIBLE);
         } else {
@@ -335,10 +335,10 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     /**
      * Sets the Access Key of the fragment
      *
-     * @param accessKey The Instagram Access Key
+     * @param accessToken The Instagram Access Token
      */
-    public void setAccessKey(String accessKey) {
-        mAccessKey = accessKey;
+    public void setAccessToken(String accessToken) {
+        mAccessToken = accessToken;
         retrieveBasicUserInfo();
     }
 

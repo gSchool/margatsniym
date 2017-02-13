@@ -18,10 +18,12 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter {
     private ArrayList<Media> mMedia;
     private Context mContext;
+    private String mAccessToken;
 
-    public ImageAdapter(Context context, ArrayList<Media> media) {
+    public ImageAdapter(Context context, ArrayList<Media> media, String acessToken) {
         mMedia = media;
         mContext = context;
+        mAccessToken = acessToken;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class ImageAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = InstagramDetailActivity.newIntent(mContext, media);
+                Intent intent = InstagramDetailActivity.newIntent(mContext, media, mAccessToken);
                 mContext.startActivity(intent);
             }
         });

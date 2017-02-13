@@ -22,15 +22,18 @@ import butterknife.ButterKnife;
  */
 public class ImagesGridViewFragment extends Fragment {
     public static final String MEDIA_EXTRAS = "MEDIA_EXTRAS";
+    public static final String ACCESS_TOKEN_EXTRAS = "ACCESS_KEY_EXTRAS";
 
     private ImageAdapter mAdapter;
     private ArrayList<Media> mMedia = new ArrayList<>();
+    private String mAccessToken;
 
     @BindView(R.id.images_grid_view) GridView mImagesGridView;
 
-    public static ImagesGridViewFragment newInstance(ArrayList<Media> media) {
+    public static ImagesGridViewFragment newInstance(ArrayList<Media> media, String accessToken) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(MEDIA_EXTRAS, media);
+        args.putString(ACCESS_TOKEN_EXTRAS, accessToken);
 
         ImagesGridViewFragment imagesGridViewFragment = new ImagesGridViewFragment();
         imagesGridViewFragment.setArguments(args);
@@ -52,10 +55,11 @@ public class ImagesGridViewFragment extends Fragment {
 
         if (getArguments() != null) {
             mMedia = getArguments().getParcelableArrayList(MEDIA_EXTRAS);
+            mAccessToken = getArguments().getString(ACCESS_TOKEN_EXTRAS);
         }
 
         //Adding the adapter
-        mAdapter = new ImageAdapter(getActivity(), mMedia);
+        mAdapter = new ImageAdapter(getActivity(), mMedia, mAccessToken);
         mImagesGridView.setAdapter(mAdapter);
 
         return root;

@@ -54,12 +54,12 @@ public class FollowedUserImageListFragment extends Fragment {
     /**
      * Retrieve a new instance of FollowedUserImageListFragment
      *
-     * @param accessKey The access key of the logged in user.
+     * @param accessToken The access key of the logged in user.
      * @return Returns a new instance of FollowedUserImageListFragment
      */
-    public static FollowedUserImageListFragment newInstance(String accessKey) {
+    public static FollowedUserImageListFragment newInstance(String accessToken) {
         Bundle extras = new Bundle();
-        extras.putString(MyUserFragment.INSTAGRAM_ACCESS_KEY, accessKey);
+        extras.putString(MyUserFragment.INSTAGRAM_ACCESS_TOKEN, accessToken);
 
         FollowedUserImageListFragment followedUserImageListFragment = new FollowedUserImageListFragment();
         followedUserImageListFragment.setArguments(extras);
@@ -67,7 +67,7 @@ public class FollowedUserImageListFragment extends Fragment {
         return followedUserImageListFragment;
     }
 
-    private String mAccessKey;
+    private String mAccessToken;
 
     @Nullable
     @Override
@@ -81,7 +81,7 @@ public class FollowedUserImageListFragment extends Fragment {
         mFollowedRecyclerView.setVisibility(View.GONE);
 
         if (getArguments() != null) {
-            mAccessKey = getArguments().getString(MyUserFragment.INSTAGRAM_ACCESS_KEY);
+            mAccessToken = getArguments().getString(MyUserFragment.INSTAGRAM_ACCESS_TOKEN);
         }
 
         mFollowedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -89,7 +89,7 @@ public class FollowedUserImageListFragment extends Fragment {
 
         mFollowedRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
-        mFollowedRecyclerAdapter = new FollowedUserImageAdapter(getContext(), new ArrayList<ArrayList<Media>>());
+        mFollowedRecyclerAdapter = new FollowedUserImageAdapter(getContext(), new ArrayList<ArrayList<Media>>(), mAccessToken);
         mFollowedRecyclerView.setAdapter(mFollowedRecyclerAdapter);
 
         retrieveFollowedMedia();
@@ -102,7 +102,7 @@ public class FollowedUserImageListFragment extends Fragment {
      */
     private void retrieveFollowedMedia() {
         final UserService service = ServiceFactory.getInstagramUserService();
-        service.getFollowedUsers(mAccessKey)
+        service.getFollowedUsers(mAccessToken)
                 .flatMap(new Func1<Response<MediaResponse<ArrayList<User>>>, Observable<?>>() {
                     @Override
                     public Observable<?> call(Response<MediaResponse<ArrayList<User>>> response) {
@@ -113,7 +113,7 @@ public class FollowedUserImageListFragment extends Fragment {
                     @Override
                     public Observable<Response<MediaResponse<ArrayList<Media>>>> call(Object o) {
                         User user = (User) o;
-                        return service.getFollowedUsersMedia(user.getId(), mAccessKey);
+                        return service.getFollowedUsersMedia(user.getId(), mAccessToken);
                     }
                 })
                 .subscribeOn(Schedulers.io())

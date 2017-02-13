@@ -30,10 +30,12 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
 
     private ArrayList<ArrayList<Media>> mFollowedUsersMedia = new ArrayList<>();
     private Context mContext;
+    private String mAccessToken;
 
-    public FollowedUserImageAdapter(Context context, ArrayList<ArrayList<Media>> followedUserMedia) {
+    public FollowedUserImageAdapter(Context context, ArrayList<ArrayList<Media>> followedUserMedia, String accessToken) {
         mContext = context;
         mFollowedUsersMedia = followedUserMedia;
+        mAccessToken = accessToken;
     }
 
     @Override
@@ -75,7 +77,7 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = InstagramDetailActivity.newIntent(mContext, media);
+                    Intent intent = InstagramDetailActivity.newIntent(mContext, media, mAccessToken);
                     mContext.startActivity(intent);
                 }
             });

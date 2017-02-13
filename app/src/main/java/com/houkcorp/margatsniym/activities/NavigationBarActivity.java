@@ -39,7 +39,7 @@ public class NavigationBarActivity extends AppCompatActivity {
 
     @BindView(R.id.bottom_nav_bar) BottomNavigationView mNavigationView;
     private LoginDialog mDialogFragment;
-    private String mAccessKey;
+    private String mAccessToken;
     private MyUserFragment mMyUserFragment;
     private FollowedUserImageListFragment mFollowedUserImageListFragment;
     private boolean mAuthRunning = false;
@@ -54,7 +54,7 @@ public class NavigationBarActivity extends AppCompatActivity {
 
         // Retrieve the access code from Shared Prefs.
         SharedPreferences sharedPreferences = getSharedPreferences(MARGATSNIYM_PREF_NAME, 0);
-        mAccessKey = sharedPreferences.getString(MARGATSNIYM_PREF_NAME, "");
+        mAccessToken = sharedPreferences.getString(MARGATSNIYM_PREF_NAME, "");
 
         // Builds the bottom navigation drawer on the view.
         mNavigationView = (BottomNavigationView) findViewById(R.id.bottom_nav_bar);
@@ -75,7 +75,7 @@ public class NavigationBarActivity extends AppCompatActivity {
         }
 
         // Test the retrieved access key.  If empty launch the login dialog.
-        if (TextUtils.isEmpty(mAccessKey)) {
+        if (TextUtils.isEmpty(mAccessToken)) {
             mAuthRunning = true;
             mDialogFragment = LoginDialog.newInstance();
             mDialogFragment.show(fragmentTransaction, "loginFrag");
@@ -121,15 +121,15 @@ public class NavigationBarActivity extends AppCompatActivity {
     public void onEvent(LoginEvent event){
         // Dismiss the dialog.
         mDialogFragment.dismiss();
-        mAccessKey = event.getAccessToken();
-        mMyUserFragment.setAccessKey(mAccessKey);
+        mAccessToken = event.getAccessToken();
+        mMyUserFragment.setAccessToken(mAccessToken);
 
         mAuthRunning = false;
 
         // Store the access key for later user.  Not the safest way to store, but ok for my purposes.
         SharedPreferences sharedPreferences = getSharedPreferences(MARGATSNIYM_PREF_NAME, 0);
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-        prefsEditor.putString(MARGATSNIYM_PREF_NAME, mAccessKey);
+        prefsEditor.putString(MARGATSNIYM_PREF_NAME, mAccessToken);
         prefsEditor.apply();
     }
 
@@ -170,12 +170,12 @@ public class NavigationBarActivity extends AppCompatActivity {
                 fragmentTag = MY_USER_FRAGMENT;
 
                 if (mMyUserFragment == null) {
-                    mMyUserFragment = MyUserFragment.newInstance(mAccessKey);
+                    mMyUserFragment = MyUserFragment.newInstance(mAccessToken);
                 }
 
                 // If fragment does not exist, create a new one.
                 fragment = mMyUserFragment;
-                mMyUserFragment.setAccessKey(mAccessKey);
+                mMyUserFragment.setAccessToken(mAccessToken);
                 setActivityTitle(getString(R.string.my_user));
 
                 break;
@@ -185,7 +185,7 @@ public class NavigationBarActivity extends AppCompatActivity {
                 fragmentTag = FOLLOWING_FRAGMENT;
 
                 if (fragment == null) {
-                    mFollowedUserImageListFragment = FollowedUserImageListFragment.newInstance(mAccessKey);
+                    mFollowedUserImageListFragment = FollowedUserImageListFragment.newInstance(mAccessToken);
                 }
 
                 fragment = mFollowedUserImageListFragment;

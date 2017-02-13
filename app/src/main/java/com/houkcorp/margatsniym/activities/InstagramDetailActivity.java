@@ -19,11 +19,15 @@ import com.houkcorp.margatsniym.models.Media;
 
 public class InstagramDetailActivity extends AppCompatActivity {
     public static final String MEDIA_EXTRA = "MEDIA_EXTRA";
+    public static final String ACCESS_TOKEN_EXTRA = "ACCESS_TOKEN_EXTRA";
     public static final String INSTAGRAM_DETAIL_FRAGMENT = "INSTAGRAM_DETAIL_FRAGMENT";
 
-    public static Intent newIntent(Context context, Media media) {
+    private Media mMedia;
+
+    public static Intent newIntent(Context context, Media media, String accessToken) {
         Intent intent = new Intent(context, InstagramDetailActivity.class);
         intent.putExtra(MEDIA_EXTRA, media);
+        intent.putExtra(ACCESS_TOKEN_EXTRA, accessToken);
 
         return intent;
     }
@@ -39,13 +43,14 @@ public class InstagramDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Media media = null;
+        String accessToken = "";
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            media = bundle.getParcelable(MEDIA_EXTRA);
+            mMedia = bundle.getParcelable(MEDIA_EXTRA);
+            accessToken = bundle.getString(ACCESS_TOKEN_EXTRA);
         }
 
-        InstagramDetailFragment instagramDetailFragment = InstagramDetailFragment.newInstance(media);
+        InstagramDetailFragment instagramDetailFragment = InstagramDetailFragment.newInstance(mMedia, accessToken);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.detail_view_frame_layout, instagramDetailFragment, INSTAGRAM_DETAIL_FRAGMENT).commit();
     }
@@ -67,10 +72,7 @@ public class InstagramDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setActivityTitle(CharSequence text) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(text);
-        }
+    public void setMedia(Media media) {
+        mMedia = media;
     }
 }

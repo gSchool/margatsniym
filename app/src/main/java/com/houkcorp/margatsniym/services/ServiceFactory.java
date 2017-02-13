@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceFactory {
     public static final String USER_URL =
-            "https://api.instagram.com/v1/users/";
+            "https://api.instagram.com/v1/";
 
     public static UserService getInstagramUserService() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Media implements Parcelable {
 
+    private String id;
     private MediaImages images;
     private MediaImages videos;
     private String type;
@@ -21,6 +22,7 @@ public class Media implements Parcelable {
     private boolean hasLiked;
 
     protected Media(Parcel in) {
+        id = in.readString();
         images = in.readParcelable(MediaImages.class.getClassLoader());
         videos = in.readParcelable(MediaImages.class.getClassLoader());
         type = in.readString();
@@ -33,6 +35,7 @@ public class Media implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeParcelable(images, flags);
         dest.writeParcelable(videos, flags);
         dest.writeString(type);
@@ -59,6 +62,10 @@ public class Media implements Parcelable {
             return new Media[size];
         }
     };
+
+    public String getId() {
+        return id;
+    }
 
     public MediaImages getImages() {
         return images;
@@ -90,5 +97,9 @@ public class Media implements Parcelable {
 
     public boolean isHasLiked() {
         return hasLiked;
+    }
+
+    public void setHasLiked(boolean hasLiked) {
+        this.hasLiked = hasLiked;
     }
 }

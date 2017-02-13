@@ -1,36 +1,39 @@
 <resources>
-    <string name="app_name">Margatsniym</string>
-    <string name="title_instagramuser_detail">InstagramUser Detail</string>
     <string name="account_title">Account</string>
-    <string name="title_activity_account">Account</string>
+    <string name="app_name">Margatsniym</string>
 
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_main_view">Images</string>
-    <string name="my_user">My User</string>
-    <string name="following">Following</string>
-    <string name="login_failed">Login failed.  Please try again later.</string>
-    <string name="profile_image">User Profile Image</string>
     <string name="bio">\tBio:</string>
-    <string name="images">Images</string>
-    <string name="images_header">\tImages:</string>
+
+    <string name="liked">Liked Icon</string>
+    <string name="following">Following</string>
     <string name="following_header">\tFollowing:</string>
     <string name="following_you">\tFollowed by:</string>
-    <string name="vertical_bar">|</string>
-    <string name="recent_media">Recent Media:</string>
-    <string name="liked_media">Liked:</string>
-    <string name="not_online">You are not currently online</string>
+
     <string name="image_detail">Image Detail</string>
+    <string name="images">Images</string>
+    <string name="images_header">\tImages:</string>
+
+    <string name="liked_media">Liked:</string>
+    <string name="login_failed">Login failed.  Please try again later.</string>
+
+    <string name="media_success">Media %1$s</string>
+    <string name="my_user">My User</string>
+
+    <string name="not_online">You are not currently online</string>
+
+    <string name="profile_image">User Profile Image</string>
+
+    <string name="recent_media">Recent Media:</string>
+
     <string name="selected_image">User Selected Image</string>
+    <string name="server_failure">%1$s failed</string>
+
+    <string name="title_activity_account">Account</string>
+    <string name="title_activity_main_view">Images</string>
+    <string name="title_instagramuser_detail">InstagramUser Detail</string>\
+
+    <string name="vertical_bar">|</string>
+    <string name="unliked">Unliked Icon</string>
+
+    <string-array name="multi_select_list_preference_default_value" />
 </resources>
