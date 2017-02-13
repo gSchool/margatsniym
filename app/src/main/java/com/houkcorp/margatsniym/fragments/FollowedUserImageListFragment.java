@@ -76,7 +76,7 @@ public class FollowedUserImageListFragment extends Fragment {
 
         ButterKnife.bind(this, root);
 
-        // HIde the recycler view and show the progress bar.
+        // Hide the recycler view and show the progress bar.
         mFollowedProgressBar.setVisibility(View.VISIBLE);
         mFollowedRecyclerView.setVisibility(View.GONE);
 
@@ -86,6 +86,8 @@ public class FollowedUserImageListFragment extends Fragment {
 
         mFollowedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mFollowedRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mFollowedRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
         mFollowedRecyclerAdapter = new FollowedUserImageAdapter(getContext(), new ArrayList<ArrayList<Media>>());
         mFollowedRecyclerView.setAdapter(mFollowedRecyclerAdapter);

@@ -32,4 +32,5 @@
     <string name="liked_media">Liked:</string>
     <string name="not_online">You are not currently online</string>
     <string name="image_detail">Image Detail</string>
+    <string name="selected_image">User Selected Image</string>
 </resources>
