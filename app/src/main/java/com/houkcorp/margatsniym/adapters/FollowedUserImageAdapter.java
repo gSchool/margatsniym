@@ -59,6 +59,7 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
 
         holder.mNameTextView.setText(user.getFullName());
 
+        holder.mUserImagesLinearLayout.removeAllViews();
         // Adds at max 5 images that the followed users have pushed up.
         int maxCount = mediaList.size() < 5 ? mediaList.size() : MAX_USER_IMAGES_SIZE;
         for (int i = 0; i < maxCount; i++) {
@@ -112,5 +113,17 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
         mFollowedUsersMedia.clear();
         mFollowedUsersMedia.addAll(followedUserMedia);
         notifyDataSetChanged();
+    }
+
+    public void updateMediaContent(Media media) {
+        for (int i = 0; i < mFollowedUsersMedia.size(); i++) {
+            ArrayList<Media> innerMediaList = mFollowedUsersMedia.get(i);
+            if (innerMediaList.contains(media)) {
+                int position = innerMediaList.indexOf(media);
+                innerMediaList.set(position, media);
+
+                notifyItemChanged(i);
+            }
+        }
     }
 }

@@ -64,4 +64,12 @@ public class ImagesGridViewFragment extends Fragment {
 
         return root;
     }
+
+    public void addOrRemoveMediaContent(Media media) {
+        mAdapter.addOrRemoveMediaContent(media);
+    }
+
+    public void updateMediaContent(Media media) {
+        mAdapter.updateMediaContent(media);
+    }
 }

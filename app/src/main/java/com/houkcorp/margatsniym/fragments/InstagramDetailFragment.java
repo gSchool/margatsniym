@@ -183,13 +183,11 @@ public class InstagramDetailFragment extends Fragment {
                 .subscribe(new Subscriber<Response<MediaResponse>>() {
                     @Override
                     public void onCompleted() {
-                        System.out.println("This completed");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println("There was an error: ");
-                        System.out.println("There was an error: " + e.toString());
+                        Log.e("InstagramDetailFragment", e.getLocalizedMessage());
                     }
 
                     @Override
@@ -231,13 +229,11 @@ public class InstagramDetailFragment extends Fragment {
                 .subscribe(new Subscriber<Response<MediaResponse>>() {
                     @Override
                     public void onCompleted() {
-                        System.out.println("This completed");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println("There was an error: ");
-                        System.out.println("There was an error: " + e.toString());
+                        Log.e("InstagramDetailFragment", e.getLocalizedMessage());
                     }
 
                     @Override

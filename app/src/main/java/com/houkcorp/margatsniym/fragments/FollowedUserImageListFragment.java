@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.adapters.FollowedUserImageAdapter;
 import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
+import com.houkcorp.margatsniym.events.MediaChangedEvent;
 import com.houkcorp.margatsniym.models.Media;
 import com.houkcorp.margatsniym.models.MediaResponse;
 import com.houkcorp.margatsniym.models.User;
@@ -26,6 +27,7 @@ import com.houkcorp.margatsniym.services.ServiceFactory;
 import com.houkcorp.margatsniym.services.UserService;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,6 +71,13 @@ public class FollowedUserImageListFragment extends Fragment {
 
     private String mAccessToken;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        EventBus.getDefault().register(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,6 +104,18 @@ public class FollowedUserImageListFragment extends Fragment {
         retrieveFollowedMedia();
 
         return root;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onEvent(MediaChangedEvent event) {
+        updateMediaContent(event.getMedia());
     }
 
     /**
@@ -127,7 +148,7 @@ public class FollowedUserImageListFragment extends Fragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println();
+                        Log.e("FollowedUserImageList", e.getLocalizedMessage());
                     }
 
                     @Override
@@ -175,5 +196,9 @@ public class FollowedUserImageListFragment extends Fragment {
 
         mFollowedRecyclerView.setVisibility(View.VISIBLE);
         mFollowedProgressBar.setVisibility(View.GONE);
+    }
+
+    private void updateMediaContent(Media media) {
+        mFollowedRecyclerAdapter.updateMediaContent(media);
     }
 }

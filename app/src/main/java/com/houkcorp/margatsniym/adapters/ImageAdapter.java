@@ -74,4 +74,23 @@ public class ImageAdapter extends BaseAdapter {
 
         return imageView;
     }
+
+    public void addOrRemoveMediaContent(Media media) {
+        if (mMedia.contains(media)) {
+            mMedia.remove(media);
+        } else {
+            mMedia.add(0, media);
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void updateMediaContent(Media media) {
+        if (mMedia.contains(media)) {
+            int position = mMedia.indexOf(media);
+            mMedia.set(position, media);
+
+            notifyDataSetChanged();
+        }
+    }
 }

@@ -22,15 +22,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
+import com.houkcorp.margatsniym.events.MediaChangedEvent;
 import com.houkcorp.margatsniym.models.Media;
 import com.houkcorp.margatsniym.models.MediaResponse;
 import com.houkcorp.margatsniym.models.User;
-import com.houkcorp.margatsniym.services.UserService;
 import com.houkcorp.margatsniym.services.ServiceFactory;
+import com.houkcorp.margatsniym.services.UserService;
 import com.houkcorp.margatsniym.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +51,8 @@ import rx.schedulers.Schedulers;
  */
 public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final String INSTAGRAM_ACCESS_TOKEN = "INSTAGRAM_ACCESS_TOKEN";
+    private ImagesGridViewFragment mUsersRecentMediaFragment;
+    private ImagesGridViewFragment mUsersLikedMediaFragment;
 
     public static MyUserFragment newInstance(String accessToken) {
         MyUserFragment myUserFragment = new MyUserFragment();
@@ -84,6 +88,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        EventBus.getDefault().register(this);
     }
 
     @Nullable
@@ -114,8 +120,22 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Subscribe
+    public void onEvent(MediaChangedEvent event) {
+        isSyncingData = true;
+
+        mUsersLikedMediaFragment.addOrRemoveMediaContent(event.getMedia());
+        mUsersRecentMediaFragment.updateMediaContent(event.getMedia());
     }
 
     /**
@@ -129,13 +149,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 .subscribe(new Subscriber<Response<MediaResponse<User>>>() {
                     @Override
                     public void onCompleted() {
-                        System.out.println("This completed");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println("There was an error: ");
-                        System.out.println("There was an error: " + e.toString());
+                        Log.e("InstagramDetailFragment", e.getLocalizedMessage());
                     }
 
                     @Override
@@ -216,13 +234,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 .subscribe(new Subscriber<Response<MediaResponse<ArrayList<Media>>>>() {
                     @Override
                     public void onCompleted() {
-                        System.out.println("This completed");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println("There was an error: ");
-                        System.out.println("There was an error: " + e.toString());
+                        Log.e("InstagramDetailFragment", e.getLocalizedMessage());
                     }
 
                     @Override
@@ -256,8 +272,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         if (media != null && media.size() > 0) {
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
             List<Media> mediaSubLists = media.subList(0, maxCount);
-            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists), mAccessToken);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_recent_media_frame_layout, gridViewFragment).commit();
+            mUsersRecentMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists), mAccessToken);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_recent_media_frame_layout, mUsersRecentMediaFragment).commit();
             mRecentMediaLinearLayout.setVisibility(View.VISIBLE);
         } else {
             mRecentMediaLinearLayout.setVisibility(View.GONE);
@@ -278,13 +294,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 .subscribe(new Subscriber<Response<MediaResponse<ArrayList<Media>>>>() {
                     @Override
                     public void onCompleted() {
-                        System.out.println("This completed");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println("There was an error: ");
-                        System.out.println("There was an error: " + e.toString());
+                        Log.e("InstagramDetailFragment", e.getLocalizedMessage());
                     }
 
                     @Override
@@ -319,8 +333,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
             // Just a sanity check for now to make sure only 20 come back.
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
             List<Media> mediaSubLists = media.subList(0, maxCount);
-            ImagesGridViewFragment gridViewFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists), mAccessToken);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_liked_media_frame_layout, gridViewFragment).commit();
+            mUsersLikedMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists), mAccessToken);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_liked_media_frame_layout, mUsersLikedMediaFragment).commit();
             mLikedMediaLinearLayout.setVisibility(View.VISIBLE);
         } else {
             mLikedMediaLinearLayout.setVisibility(View.GONE);

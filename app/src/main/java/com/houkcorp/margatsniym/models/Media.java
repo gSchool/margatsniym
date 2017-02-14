@@ -102,4 +102,15 @@ public class Media implements Parcelable {
     public void setHasLiked(boolean hasLiked) {
         this.hasLiked = hasLiked;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Media)) {
+            return false;
+        }
+
+        Media media = (Media) obj;
+
+        return media.getId().equals(id);
+    }
 }
