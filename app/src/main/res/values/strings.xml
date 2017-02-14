@@ -15,6 +15,7 @@
 
     <string name="liked_media">Liked:</string>
     <string name="login_failed">Login failed.  Please try again later.</string>
+    <string name="logout">Log out</string>
 
     <string name="media_success">Media %1$s</string>
     <string name="my_user">My User</string>
@@ -30,11 +31,12 @@
 
     <string name="title_activity_account">Account</string>
     <string name="title_activity_main_view">Images</string>
-    <string name="title_instagramuser_detail">InstagramUser Detail</string>\
+    <string name="title_instagramuser_detail">InstagramUser Detail</string>
 
-    <string name="vertical_bar">|</string>
     <string name="unliked">Unliked Icon</string>
     <string name="user_thumbnail">Users thumbnail image</string>
+
+    <string name="vertical_bar">|</string>
 
     <string-array name="multi_select_list_preference_default_value" />
 </resources>
