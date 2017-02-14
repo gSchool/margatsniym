@@ -30,8 +30,8 @@
 
                     <ImageView
                         android:id="@+id/my_user_image_view"
-                        android:layout_width="75dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/seventy_five_dp"
+                        android:layout_height="@dimen/one_hundred_dp"
                         android:layout_marginEnd="@dimen/image_View_margin"
                         android:layout_marginLeft="@dimen/image_View_margin"
                         android:layout_marginRight="@dimen/image_View_margin"
@@ -281,6 +281,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:indeterminate="true"
-            android:padding="12dp" />
+            android:padding="@dimen/twelve_dp" />
     </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

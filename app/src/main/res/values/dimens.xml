@@ -14,4 +14,13 @@
     <dimen name="mini_margin">2dp</dimen>
     <dimen name="large_text">20sp</dimen>
     <dimen name="small_text">12sp</dimen>
+    <dimen name="twenty_dp">20dp</dimen>
+    <dimen name="thirty_sp">30sp</dimen>
+    <dimen name="forty_five_dp">45dp</dimen>
+    <dimen name="fifty_dp">50dp</dimen>
+    <dimen name="twelve_dp">12dp</dimen>
+    <dimen name="four_hundred_dp">400dp</dimen>
+    <dimen name="three_hundred_fifty_dp">350dp</dimen>
+    <dimen name="one_hundred_dp">100dp</dimen>
+    <dimen name="seventy_five_dp">75dp</dimen>
 </resources>
