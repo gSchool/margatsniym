@@ -115,6 +115,13 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
         notifyDataSetChanged();
     }
 
+    /**
+     * Update the media at a certain point.
+     *
+     * Has to check the inner list and update that.
+     *
+     * @param media The media to be updated.
+     */
     public void updateMediaContent(Media media) {
         for (int i = 0; i < mFollowedUsersMedia.size(); i++) {
             ArrayList<Media> innerMediaList = mFollowedUsersMedia.get(i);

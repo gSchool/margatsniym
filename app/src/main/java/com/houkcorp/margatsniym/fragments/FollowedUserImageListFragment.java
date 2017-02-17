@@ -31,7 +31,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,11 +46,12 @@ import rx.schedulers.Schedulers;
  * A Recycler view of max 20 users and max 5 images that are followed by the logged in user.
  */
 public class FollowedUserImageListFragment extends Fragment {
-    ArrayList<ArrayList<Media>> mFollowedUsersMedia = new ArrayList<>();
-
-    @BindView(R.id.followed_users_recycler_view) RecyclerView mFollowedRecyclerView;
-    @BindView(R.id.followed_users_progress_bar) ProgressBar mFollowedProgressBar;
+    private ArrayList<ArrayList<Media>> mFollowedUsersMedia = new ArrayList<>();
     private FollowedUserImageAdapter mFollowedRecyclerAdapter;
+    private String mAccessToken;
+
+    @BindView(R.id.followed_users_progress_bar) ProgressBar mFollowedProgressBar;
+    @BindView(R.id.followed_users_recycler_view) RecyclerView mFollowedRecyclerView;
 
     /**
      * Retrieve a new instance of FollowedUserImageListFragment
@@ -68,8 +68,6 @@ public class FollowedUserImageListFragment extends Fragment {
 
         return followedUserImageListFragment;
     }
-
-    private String mAccessToken;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -198,6 +196,11 @@ public class FollowedUserImageListFragment extends Fragment {
         mFollowedProgressBar.setVisibility(View.GONE);
     }
 
+    /**
+     * Updates the Media on the adapter.
+     *
+     * @param media The media to update.
+     */
     private void updateMediaContent(Media media) {
         mFollowedRecyclerAdapter.updateMediaContent(media);
     }

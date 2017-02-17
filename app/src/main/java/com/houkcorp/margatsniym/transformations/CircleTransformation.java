@@ -7,6 +7,9 @@ import android.graphics.Paint;
 
 import com.squareup.picasso.Transformation;
 
+/**
+ * A helper class to round the image in a Picasso image load.
+ */
 public class CircleTransformation implements Transformation {
     @Override
     public Bitmap transform(Bitmap source) {

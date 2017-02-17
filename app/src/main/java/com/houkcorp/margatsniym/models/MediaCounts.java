@@ -2,6 +2,9 @@ package com.houkcorp.margatsniym.models;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The follow counts for media.
+ */
 public class MediaCounts {
     private double media;
 

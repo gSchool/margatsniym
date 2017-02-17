@@ -3,6 +3,9 @@ package com.houkcorp.margatsniym.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * A class for holding any caption data for Media.
+ */
 public class CaptionInfo implements Parcelable {
     private String text;
 

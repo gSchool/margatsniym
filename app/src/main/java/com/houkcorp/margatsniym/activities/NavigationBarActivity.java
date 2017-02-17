@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.houkcorp.margatsniym.R;
@@ -31,19 +30,19 @@ import butterknife.ButterKnife;
  * in Fragment views.
  */
 public class NavigationBarActivity extends AppCompatActivity {
-    private static final String SELECTED_MENU_ITEM = "SELECTED_MENU_ITEM_ID";
-    private static final String MY_USER_FRAGMENT = "MY_USER_FRAGMENT";
     private static final String FOLLOWING_FRAGMENT = "FOLLOWING_FRAGMENT";
     private static final String MARGATSNIYM_PREF_NAME = "MargatsniymPrefs";
+    private static final String MY_USER_FRAGMENT = "MY_USER_FRAGMENT";
+    private static final String SELECTED_MENU_ITEM = "SELECTED_MENU_ITEM_ID";
 
+    private boolean mAuthRunning = false;
+    private FollowedUserImageListFragment mFollowedUserImageListFragment;
     private int mSelectedMenuItemId;
+    private LoginDialog mDialogFragment;
+    private MyUserFragment mMyUserFragment;
+    private String mAccessToken;
 
     @BindView(R.id.bottom_nav_bar) BottomNavigationView mNavigationView;
-    private LoginDialog mDialogFragment;
-    private String mAccessToken;
-    private MyUserFragment mMyUserFragment;
-    private FollowedUserImageListFragment mFollowedUserImageListFragment;
-    private boolean mAuthRunning = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +81,8 @@ public class NavigationBarActivity extends AppCompatActivity {
             mDialogFragment.show(fragmentTransaction, "loginFrag");
         }
 
+        EventBus.getDefault().register(this);
+
         // Launch the menu
         if (savedInstanceState != null) {
             selectMenuItem(mNavigationView.getMenu().findItem(savedInstanceState.getInt(SELECTED_MENU_ITEM, 0)));
@@ -97,39 +98,11 @@ public class NavigationBarActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.user_menu, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.log_out:
-
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
     /**
      * Catches the login and saves the Access Key to shared Prefs.

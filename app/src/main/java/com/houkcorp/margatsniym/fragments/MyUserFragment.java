@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -50,9 +51,31 @@ import rx.schedulers.Schedulers;
  * This Fragment displays the basic info for an Instagram User.
  */
 public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private static final int MAX_LIST_COUNT = 20;
     public static final String INSTAGRAM_ACCESS_TOKEN = "INSTAGRAM_ACCESS_TOKEN";
-    private ImagesGridViewFragment mUsersRecentMediaFragment;
+
+    private boolean isDualPane = false;
+    private boolean isSyncingData = false;
     private ImagesGridViewFragment mUsersLikedMediaFragment;
+    private ImagesGridViewFragment mUsersRecentMediaFragment;
+    private String mAccessToken;
+
+    @BindView(R.id.my_user_bio_card_view) CardView mBioCardView;
+    @BindView(R.id.my_user_counts_card_view) CardView mCountsCardView;
+    @BindView(R.id.my_user_image_view) ImageView mUserImageView;
+    @BindView(R.id.my_user_bio_linear_layout) LinearLayout mBioLinearLayout;
+    @BindView(R.id.my_user_counts_linear_layout) LinearLayout mCountsLinearLayout;
+    @BindView(R.id.my_user_liked_media_linear_layout) LinearLayout mLikedMediaLinearLayout;
+    @BindView(R.id.my_user_recent_media_linear_layout) LinearLayout mRecentMediaLinearLayout;
+    @BindView(R.id.my_user_progress_bar) ProgressBar mProgressBar;
+    @BindView(R.id.my_user_scroll_view) ScrollView mScrollView;
+    @BindView(R.id.my_user_swipe_refresh_layout) SwipeRefreshLayout mUserSwipeRefreshLayout;
+    @BindView(R.id.my_user_bio_text_view) TextView mBioTextView;
+    @BindView(R.id.my_user_followed_by_text_view) TextView mFollowedByTextView;
+    @BindView(R.id.my_user_follows_text_view) TextView mFollowsTextView;
+    @BindView(R.id.my_user_media_count_text_view) TextView mMediaCountTextView;
+    @BindView(R.id.my_user_name_text_view) TextView mNameTextView;
+    @BindView(R.id.my_user_website_text_view) TextView mWebsiteTextView;
 
     public static MyUserFragment newInstance(String accessToken) {
         MyUserFragment myUserFragment = new MyUserFragment();
@@ -61,29 +84,6 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         return myUserFragment;
     }
-
-    private String mAccessToken;
-
-    @BindView(R.id.my_user_scroll_view) ScrollView mScrollView;
-    @BindView(R.id.my_user_progress_bar) ProgressBar mProgressBar;
-
-    @BindView(R.id.my_user_swipe_refresh_layout) SwipeRefreshLayout mUserSwipeRefreshLayout;
-    @BindView(R.id.my_user_image_view) ImageView mUserImageView;
-    @BindView(R.id.my_user_name_text_view) TextView mNameTextView;
-    @BindView(R.id.my_user_website_text_view) TextView mWebsiteTextView;
-    @BindView(R.id.my_user_bio_linear_layout) LinearLayout mBioLinearLayout;
-    @BindView(R.id.my_user_bio_card_view) CardView mBioCardView;
-    @BindView(R.id.my_user_bio_text_view) TextView mBioTextView;
-    @BindView(R.id.my_user_counts_linear_layout) LinearLayout mCountsLinearLayout;
-    @BindView(R.id.my_user_counts_card_view) CardView mCountsCardView;
-    @BindView(R.id.my_user_media_count_text_view) TextView mMediaCountTextView;
-    @BindView(R.id.my_user_follows_text_view) TextView mFollowsTextView;
-    @BindView(R.id.my_user_followed_by_text_view) TextView mFollowedByTextView;
-    @BindView(R.id.my_user_recent_media_linear_layout) LinearLayout mRecentMediaLinearLayout;
-    @BindView(R.id.my_user_liked_media_linear_layout) LinearLayout mLikedMediaLinearLayout;
-
-    private static final int MAX_LIST_COUNT = 20;
-    private boolean isSyncingData = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,6 +114,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
             } else {
                 Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
             }
+        }
+
+        FrameLayout frameLayout = (FrameLayout) root.findViewById(R.id.my_user_detail_frame_layout);
+        if (frameLayout != null) {
+            isDualPane = true;
         }
 
         return root;

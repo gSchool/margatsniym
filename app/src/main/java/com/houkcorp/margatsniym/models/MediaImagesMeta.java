@@ -3,6 +3,9 @@ package com.houkcorp.margatsniym.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * The basic size info of a Media Image.
+ */
 public class MediaImagesMeta implements Parcelable {
     private int width;
     private int height;

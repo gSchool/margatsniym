@@ -3,6 +3,9 @@ package com.houkcorp.margatsniym.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * The location of a Users media.
+ */
 public class LocationInfo implements Parcelable {
     private double latitude;
     private double longitude;

@@ -1,5 +1,10 @@
 package com.houkcorp.margatsniym.models;
 
+/**
+ * This is the Instagram response.
+ *
+ * @param <T> The type for data of the returned response.
+ */
 public class MediaResponse<T> {
     private T data;
     private ResponseError meta;

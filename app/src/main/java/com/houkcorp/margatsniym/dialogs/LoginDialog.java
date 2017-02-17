@@ -21,9 +21,9 @@ import com.houkcorp.margatsniym.utils.NetworkUtils;
  * Launches a Login Dialog.  Shows the Instagram Login inside of a Web View.
  */
 public class LoginDialog extends DialogFragment {
-
     private static final String CLIENT_ID = "85326b79ccca4d1f8e155765dcb8a7b7";
     private static final String REDIRECT_URI = "https://houkappdevelopment.wordpress.com/";
+
     private String mAccessToken;
 
     public static LoginDialog newInstance(){

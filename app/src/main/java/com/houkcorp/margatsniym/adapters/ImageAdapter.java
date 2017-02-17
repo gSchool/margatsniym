@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.houkcorp.margatsniym.activities.InstagramDetailActivity;
 import com.houkcorp.margatsniym.models.Media;
@@ -75,6 +74,11 @@ public class ImageAdapter extends BaseAdapter {
         return imageView;
     }
 
+    /**
+     * Add or remove liked media based on whether or not the image was liked.
+     *
+     * @param media The media to add or remove.
+     */
     public void addOrRemoveMediaContent(Media media) {
         if (mMedia.contains(media)) {
             mMedia.remove(media);
@@ -85,6 +89,11 @@ public class ImageAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Updates the media at a certain position.
+     *
+     * @param media The media to update.
+     */
     public void updateMediaContent(Media media) {
         if (mMedia.contains(media)) {
             int position = mMedia.indexOf(media);

@@ -6,6 +6,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * The Retrofit service to setup the service calls.
+ */
 public class ServiceFactory {
     public static final String USER_URL =
             "https://api.instagram.com/v1/";
@@ -25,20 +28,4 @@ public class ServiceFactory {
 
         return retrofit.create(UserService.class);
     }
-
-    /*public static PhotoService getPhotoService() {
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(loggingInterceptor);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(PHOTOS_SEARCH_URL)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
-
-        return retrofit.create(PhotoService.class);
-    }*/
 }

@@ -52,16 +52,16 @@ public class InstagramDetailFragment extends Fragment {
     private Media mMedia;
     private String mAccessToken;
 
-    @BindView(R.id.image_detail_scroll_view) ScrollView mDetailScrollView;
-    @BindView(R.id.image_detail_users_image_view) ImageView mDetailUsersImageView;
-    @BindView(R.id.image_detail_users_text_view) TextView mDetailUsersTextView;
     @BindView(R.id.image_detail_image_view) ImageView mDetailImageView;
-    @BindView(R.id.image_detail_video_view) VideoView mDetailVideoView;
-    @BindView(R.id.image_detail_progress_bar) ProgressBar mDetailProgressBar;
     @BindView(R.id.image_detail_liked_image_view) ImageView mDetailLikedImageView;
     @BindView(R.id.image_detail_unliked_image_view) ImageView mDetailUnLikedImageView;
+    @BindView(R.id.image_detail_users_image_view) ImageView mDetailUsersImageView;
+    @BindView(R.id.image_detail_progress_bar) ProgressBar mDetailProgressBar;
+    @BindView(R.id.image_detail_scroll_view) ScrollView mDetailScrollView;
     @BindView(R.id.image_detail_address_line_one) TextView mDetailAddressLineOne;
     @BindView(R.id.image_detail_address_line_two) TextView mDetailAddressLineTwo;
+    @BindView(R.id.image_detail_users_text_view) TextView mDetailUsersTextView;
+    @BindView(R.id.image_detail_video_view) VideoView mDetailVideoView;
 
     public static InstagramDetailFragment newInstance(Media media, String accessToken) {
         Bundle extras = new Bundle();
@@ -99,6 +99,7 @@ public class InstagramDetailFragment extends Fragment {
 
         mDetailUsersTextView.setText(mMedia.getUser().getFullName());
 
+        // Displays either ImageView or VideoView based of the type.
         if (mMedia.getType().equals("image")) {
             Picasso
                     .with(getContext())
@@ -117,6 +118,7 @@ public class InstagramDetailFragment extends Fragment {
             mDetailVideoView.setVisibility(View.VISIBLE);
         }
 
+        // Displays the proper icon based off whether or not the Media was liked.
         if (mMedia.isHasLiked()) {
             mDetailLikedImageView.setVisibility(View.VISIBLE);
             mDetailUnLikedImageView.setVisibility(View.GONE);
@@ -139,6 +141,7 @@ public class InstagramDetailFragment extends Fragment {
             }
         });
 
+        // Display the location if it exists.
         if (mMedia.getLocation() != null) {
             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
             List<Address> addresses = null;
@@ -174,6 +177,9 @@ public class InstagramDetailFragment extends Fragment {
         return root;
     }
 
+    /**
+     * Likes the media if it is not currently liked.
+     */
     private void likeMedia() {
         UserService service = ServiceFactory.getInstagramUserService();
         service.likeMedia(mMedia.getId(), mAccessToken, "")
@@ -220,6 +226,9 @@ public class InstagramDetailFragment extends Fragment {
                 });
     }
 
+    /**
+     * Unlikes the media if it is currently liked.
+     */
     private void unLikeMedia() {
         UserService service = ServiceFactory.getInstagramUserService();
         service.unLikeMedia(mMedia.getId(), mAccessToken)

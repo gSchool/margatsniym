@@ -2,6 +2,9 @@ package com.houkcorp.margatsniym.models;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The page information for a list of data returned from the Instagram API.
+ */
 public class ResponsePagination {
     @SerializedName("next_url")
     private String nextUrl;

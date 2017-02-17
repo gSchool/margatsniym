@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The Instagram User.
+ */
 public class User implements Parcelable {
 
     @SerializedName("full_name")

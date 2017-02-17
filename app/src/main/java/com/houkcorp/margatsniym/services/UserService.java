@@ -15,6 +15,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
+/**
+ * The different API route calls and data to send.
+ */
 public interface UserService {
     String ACCESS_TOKEN_QUERY = "access_token";
 

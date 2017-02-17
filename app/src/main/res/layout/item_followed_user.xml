@@ -15,10 +15,10 @@
             android:id="@+id/followed_user_image_view"
             android:layout_width="@dimen/fifty_dp"
             android:layout_height="@dimen/seventy_five_dp"
-            android:layout_marginEnd="@dimen/image_View_margin"
-            android:layout_marginLeft="@dimen/image_View_margin"
-            android:layout_marginRight="@dimen/image_View_margin"
-            android:layout_marginStart="@dimen/image_View_margin"
+            android:layout_marginEnd="@dimen/image_view_margin"
+            android:layout_marginLeft="@dimen/image_view_margin"
+            android:layout_marginRight="@dimen/image_view_margin"
+            android:layout_marginStart="@dimen/image_view_margin"
             android:contentDescription="@string/profile_image" />
 
         <TextView

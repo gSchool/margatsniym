@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The image information for a Medias Image.
+ */
 public class MediaImages implements Parcelable {
 
     @SerializedName("standard_resolution")

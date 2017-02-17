@@ -21,11 +21,11 @@ import butterknife.ButterKnife;
  * A reusable fragment for displaynig a list of images.
  */
 public class ImagesGridViewFragment extends Fragment {
-    public static final String MEDIA_EXTRAS = "MEDIA_EXTRAS";
     public static final String ACCESS_TOKEN_EXTRAS = "ACCESS_KEY_EXTRAS";
+    public static final String MEDIA_EXTRAS = "MEDIA_EXTRAS";
 
-    private ImageAdapter mAdapter;
     private ArrayList<Media> mMedia = new ArrayList<>();
+    private ImageAdapter mAdapter;
     private String mAccessToken;
 
     @BindView(R.id.images_grid_view) GridView mImagesGridView;
@@ -65,10 +65,20 @@ public class ImagesGridViewFragment extends Fragment {
         return root;
     }
 
+    /**
+     * Calls the adapters addOrRemoveMediaContent method.
+     *
+     * @param media The media to add or delete
+     */
     public void addOrRemoveMediaContent(Media media) {
         mAdapter.addOrRemoveMediaContent(media);
     }
 
+    /**
+     * Calls the adapters update method.
+     *
+     * @param media The Media to update on the adapter.
+     */
     public void updateMediaContent(Media media) {
         mAdapter.updateMediaContent(media);
     }
