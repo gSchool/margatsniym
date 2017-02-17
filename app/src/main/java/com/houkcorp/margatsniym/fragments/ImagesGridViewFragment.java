@@ -22,18 +22,22 @@ import butterknife.ButterKnife;
  */
 public class ImagesGridViewFragment extends Fragment {
     public static final String ACCESS_TOKEN_EXTRAS = "ACCESS_KEY_EXTRAS";
+    public static final String IS_DUAL_PANE_EXTRAS = "IS_DUAL_PANE_EXTRAS";
     public static final String MEDIA_EXTRAS = "MEDIA_EXTRAS";
 
     private ArrayList<Media> mMedia = new ArrayList<>();
+    private boolean mIsDualPane;
     private ImageAdapter mAdapter;
+    private MyUserFragment mMyUserFragment;
     private String mAccessToken;
 
     @BindView(R.id.images_grid_view) GridView mImagesGridView;
 
-    public static ImagesGridViewFragment newInstance(ArrayList<Media> media, String accessToken) {
+    public static ImagesGridViewFragment newInstance(ArrayList<Media> media, String accessToken, boolean isDualPane) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(MEDIA_EXTRAS, media);
         args.putString(ACCESS_TOKEN_EXTRAS, accessToken);
+        args.putBoolean(IS_DUAL_PANE_EXTRAS, isDualPane);
 
         ImagesGridViewFragment imagesGridViewFragment = new ImagesGridViewFragment();
         imagesGridViewFragment.setArguments(args);
@@ -56,10 +60,11 @@ public class ImagesGridViewFragment extends Fragment {
         if (getArguments() != null) {
             mMedia = getArguments().getParcelableArrayList(MEDIA_EXTRAS);
             mAccessToken = getArguments().getString(ACCESS_TOKEN_EXTRAS);
+            mIsDualPane = getArguments().getBoolean(IS_DUAL_PANE_EXTRAS);
         }
 
         //Adding the adapter
-        mAdapter = new ImageAdapter(getActivity(), mMedia, mAccessToken);
+        mAdapter = new ImageAdapter(getActivity(), mMedia, mAccessToken, mIsDualPane, mMyUserFragment);
         mImagesGridView.setAdapter(mAdapter);
 
         return root;
@@ -81,5 +86,14 @@ public class ImagesGridViewFragment extends Fragment {
      */
     public void updateMediaContent(Media media) {
         mAdapter.updateMediaContent(media);
+    }
+
+    /**
+     * Sets the MyUserFragment for this fragment
+     *
+     * @param myUserFragment The MyUserFragment
+     */
+    public void setMyUserFragment(MyUserFragment myUserFragment) {
+        mMyUserFragment = myUserFragment;
     }
 }

@@ -9,6 +9,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.houkcorp.margatsniym.activities.InstagramDetailActivity;
+import com.houkcorp.margatsniym.fragments.MyUserFragment;
 import com.houkcorp.margatsniym.models.Media;
 import com.squareup.picasso.Picasso;
 
@@ -16,13 +17,17 @@ import java.util.ArrayList;
 
 public class ImageAdapter extends BaseAdapter {
     private ArrayList<Media> mMedia;
+    private boolean mIsDualPane;
     private Context mContext;
+    private MyUserFragment mMyUserFragment;
     private String mAccessToken;
 
-    public ImageAdapter(Context context, ArrayList<Media> media, String acessToken) {
+    public ImageAdapter(Context context, ArrayList<Media> media, String acessToken, boolean isDualPane, MyUserFragment myUserFragment) {
         mMedia = media;
         mContext = context;
         mAccessToken = acessToken;
+        mIsDualPane = isDualPane;
+        mMyUserFragment = myUserFragment;
     }
 
     @Override
@@ -66,8 +71,12 @@ public class ImageAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = InstagramDetailActivity.newIntent(mContext, media, mAccessToken);
-                mContext.startActivity(intent);
+                if (mIsDualPane) {
+                    mMyUserFragment.showTabletFrameLayout(media);
+                } else {
+                    Intent intent = InstagramDetailActivity.newIntent(mContext, media, mAccessToken);
+                    mContext.startActivity(intent);
+                }
             }
         });
 

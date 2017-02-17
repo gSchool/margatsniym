@@ -35,27 +35,27 @@ dependencies {
     compile 'com.android.support:support-vector-drawable:25.1.1'
     testCompile 'junit:junit:4.12'
 
+    /*Butterknife*/
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    /*EventBus*/
+    compile 'org.greenrobot:eventbus:3.0.0'
+
+    /*GSON*/
+    compile 'com.google.code.gson:gson:2.8.0'
+
+    /*OKHTTP*/
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+
+    /*Picasso*/
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
     /*Retrofit*/
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
 
-    /*EventBus*/
-    compile 'org.greenrobot:eventbus:3.0.0'
-
-    /*Butterknife*/
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
     //RX Java
     compile 'io.reactivex:rxandroid:1.1.0'
-
-    /*Picasso*/
-    compile 'com.squareup.picasso:picasso:2.5.2'
-
-    /*OKHTTP*/
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-
-    /*GSON*/
-    compile 'com.google.code.gson:gson:2.8.0'
 }

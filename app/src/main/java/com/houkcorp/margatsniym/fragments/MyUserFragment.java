@@ -277,7 +277,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         if (media != null && media.size() > 0) {
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
             List<Media> mediaSubLists = media.subList(0, maxCount);
-            mUsersRecentMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists), mAccessToken);
+            mUsersRecentMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists), mAccessToken, isDualPane);
+            mUsersRecentMediaFragment.setMyUserFragment(this);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_recent_media_frame_layout, mUsersRecentMediaFragment).commit();
             mRecentMediaLinearLayout.setVisibility(View.VISIBLE);
         } else {
@@ -338,7 +339,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
             // Just a sanity check for now to make sure only 20 come back.
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
             List<Media> mediaSubLists = media.subList(0, maxCount);
-            mUsersLikedMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists), mAccessToken);
+            mUsersLikedMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists), mAccessToken, isDualPane);
+            mUsersLikedMediaFragment.setMyUserFragment(this);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_liked_media_frame_layout, mUsersLikedMediaFragment).commit();
             mLikedMediaLinearLayout.setVisibility(View.VISIBLE);
         } else {
@@ -391,5 +393,13 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    /**
+     * Loads the view in the Master/Detail style from the Adapter
+     */
+    public void showTabletFrameLayout(Media media) {
+        InstagramDetailFragment instagramDetailFragment = InstagramDetailFragment.newInstance(media, mAccessToken);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_detail_frame_layout, instagramDetailFragment).commit();
     }
 }
