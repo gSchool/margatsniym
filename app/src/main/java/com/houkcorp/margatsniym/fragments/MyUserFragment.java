@@ -158,7 +158,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("InstagramDetailFragment", e.getLocalizedMessage());
+                        Log.e("ImageDetailFragment", e.getLocalizedMessage());
                     }
 
                     @Override
@@ -243,7 +243,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("InstagramDetailFragment", e.getLocalizedMessage());
+                        Log.e("ImageDetailFragment", e.getLocalizedMessage());
                     }
 
                     @Override
@@ -304,7 +304,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("InstagramDetailFragment", e.getLocalizedMessage());
+                        Log.e("ImageDetailFragment", e.getLocalizedMessage());
                     }
 
                     @Override
@@ -399,7 +399,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
      * Loads the view in the Master/Detail style from the Adapter
      */
     public void showTabletFrameLayout(Media media) {
-        InstagramDetailFragment instagramDetailFragment = InstagramDetailFragment.newInstance(media, mAccessToken);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_detail_frame_layout, instagramDetailFragment).commit();
+        ImageDetailFragment imageDetailFragment = ImageDetailFragment.newInstance(media, mAccessToken);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_detail_frame_layout, imageDetailFragment).commit();
     }
 }

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.houkcorp.margatsniym.activities.InstagramDetailActivity;
+import com.houkcorp.margatsniym.activities.ImageDetailActivity;
 import com.houkcorp.margatsniym.fragments.MyUserFragment;
 import com.houkcorp.margatsniym.models.Media;
 import com.squareup.picasso.Picasso;
@@ -74,7 +74,7 @@ public class ImageAdapter extends BaseAdapter {
                 if (mIsDualPane) {
                     mMyUserFragment.showTabletFrameLayout(media);
                 } else {
-                    Intent intent = InstagramDetailActivity.newIntent(mContext, media, mAccessToken);
+                    Intent intent = ImageDetailActivity.newIntent(mContext, media, mAccessToken);
                     mContext.startActivity(intent);
                 }
             }

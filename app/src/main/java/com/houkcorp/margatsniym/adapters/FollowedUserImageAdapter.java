@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.houkcorp.margatsniym.R;
-import com.houkcorp.margatsniym.activities.InstagramDetailActivity;
+import com.houkcorp.margatsniym.activities.ImageDetailActivity;
 import com.houkcorp.margatsniym.models.Media;
 import com.houkcorp.margatsniym.models.User;
 import com.squareup.picasso.Picasso;
@@ -78,7 +78,7 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = InstagramDetailActivity.newIntent(mContext, media, mAccessToken);
+                    Intent intent = ImageDetailActivity.newIntent(mContext, media, mAccessToken);
                     mContext.startActivity(intent);
                 }
             });

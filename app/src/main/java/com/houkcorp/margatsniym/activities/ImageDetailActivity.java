@@ -1,91 +1,84 @@
-/*
 package com.houkcorp.margatsniym.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.houkcorp.margatsniym.R;
+import com.houkcorp.margatsniym.fragments.ImageDetailFragment;
+import com.houkcorp.margatsniym.models.Media;
 
-*/
 /**
- * An activity representing a single User detail screen. This
- * activity is only used narrow width devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a {@link ImageListActivity}.
- *//*
-
+ * The detail view of an Instagram image.
+ */
 public class ImageDetailActivity extends AppCompatActivity {
+    public static final String ACCESS_TOKEN_EXTRA = "ACCESS_TOKEN_EXTRA";
+    public static final String INSTAGRAM_DETAIL_FRAGMENT = "INSTAGRAM_DETAIL_FRAGMENT";
+    public static final String MEDIA_EXTRA = "MEDIA_EXTRA";
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, ImageDetailActivity.class);
+    private Media mMedia;
+
+    public static Intent newIntent(Context context, Media media, String accessToken) {
+        Intent intent = new Intent(context, ImageDetailActivity.class);
+        intent.putExtra(ACCESS_TOKEN_EXTRA, accessToken);
+        intent.putExtra(MEDIA_EXTRA, media);
+
+        return intent;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_instagramuser_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        setContentView(R.layout.activity_instagram_detail);
 
-        // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(ImageDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ImageDetailFragment.ARG_ITEM_ID));
-            ImageDetailFragment fragment = new ImageDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.instagramuser_detail_container, fragment)
-                    .commit();
+        String accessToken = "";
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mMedia = bundle.getParcelable(MEDIA_EXTRA);
+            accessToken = bundle.getString(ACCESS_TOKEN_EXTRA);
         }
+
+        ImageDetailFragment imageDetailFragment = ImageDetailFragment.newInstance(mMedia, accessToken);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.detail_view_frame_layout, imageDetailFragment, INSTAGRAM_DETAIL_FRAGMENT).commit();
+    }
+
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            navigateUpTo(new Intent(this, ImageListActivity.class));
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
-}*/
+
+    /**
+     * Sets the Media of the Detail.
+     * B
+     * @param media The media to display.
+     */
+    public void setMedia(Media media) {
+        mMedia = media;
+    }
+}

@@ -31,12 +31,12 @@
 
     <string name="title_activity_account">Account</string>
     <string name="title_activity_main_view">Images</string>
-    <string name="title_instagramuser_detail">InstagramUser Detail</string>
 
     <string name="unliked">Unliked Icon</string>
     <string name="user_thumbnail">Users thumbnail image</string>
 
     <string name="vertical_bar">|</string>
+    <string name="location">Location:</string>
 
     <string-array name="multi_select_list_preference_default_value" />
 </resources>

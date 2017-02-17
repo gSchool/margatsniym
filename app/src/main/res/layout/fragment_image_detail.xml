@@ -83,12 +83,22 @@
                     app:srcCompat="@drawable/ic_thumb_up_white_24px" />
 
                 <LinearLayout
+                    android:id="@+id/image_detail_location_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/twenty_dp"
                     android:layout_marginStart="@dimen/twenty_dp"
                     android:layout_marginTop="@dimen/medium_margin"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location"
+                        android:textSize="@dimen/medium_text"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
 
                     <TextView
                         android:id="@+id/image_detail_address_line_one"
