@@ -18,16 +18,18 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter {
     private ArrayList<Media> mMedia;
     private boolean mIsDualPane;
+    private boolean mIsFirstLoad;
     private Context mContext;
     private MyUserFragment mMyUserFragment;
     private String mAccessToken;
 
-    public ImageAdapter(Context context, ArrayList<Media> media, String acessToken, boolean isDualPane, MyUserFragment myUserFragment) {
+    public ImageAdapter(Context context, ArrayList<Media> media, String acessToken, boolean isDualPane, MyUserFragment myUserFragment, boolean isFirstLoad) {
         mMedia = media;
         mContext = context;
         mAccessToken = acessToken;
         mIsDualPane = isDualPane;
         mMyUserFragment = myUserFragment;
+        mIsFirstLoad = isFirstLoad;
     }
 
     @Override
@@ -66,6 +68,11 @@ public class ImageAdapter extends BaseAdapter {
                 .resize(200, 200)
                 .centerCrop()
                 .into(imageView);
+
+        if (position == 0 && mIsDualPane && mIsFirstLoad) {
+            mIsFirstLoad = false;
+            mMyUserFragment.showTabletFrameLayout(media);
+        }
 
         // Launches a detail view of the selected image.
         imageView.setOnClickListener(new View.OnClickListener() {
