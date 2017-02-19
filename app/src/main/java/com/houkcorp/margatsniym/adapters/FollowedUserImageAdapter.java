@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.activities.ImageDetailActivity;
+import com.houkcorp.margatsniym.fragments.FollowedUserImageListFragment;
 import com.houkcorp.margatsniym.models.Media;
 import com.houkcorp.margatsniym.models.User;
 import com.squareup.picasso.Picasso;
@@ -29,13 +30,19 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
     private static final int MAX_USER_IMAGES_SIZE = 5;
 
     private ArrayList<ArrayList<Media>> mFollowedUsersMedia = new ArrayList<>();
+    private boolean mIsDualPane;
+    private boolean mIsFirstLoad;
     private Context mContext;
+    private FollowedUserImageListFragment mFollowedUserImageListFragment;
     private String mAccessToken;
 
-    public FollowedUserImageAdapter(Context context, ArrayList<ArrayList<Media>> followedUserMedia, String accessToken) {
+    public FollowedUserImageAdapter(Context context, ArrayList<ArrayList<Media>> followedUserMedia, String accessToken, boolean isDualPane, FollowedUserImageListFragment followedUserImageListFragment, boolean isFirstLoad) {
         mContext = context;
         mFollowedUsersMedia = followedUserMedia;
         mAccessToken = accessToken;
+        mIsDualPane = isDualPane;
+        mFollowedUserImageListFragment = followedUserImageListFragment;
+        mIsFirstLoad = isFirstLoad;
     }
 
     @Override
@@ -75,11 +82,20 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
                     .centerCrop()
                     .into(imageView);
 
+            if (position == 0 && mIsDualPane && mIsFirstLoad) {
+                mIsFirstLoad = false;
+                mFollowedUserImageListFragment.showTabletFrameLayout(media);
+            }
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = ImageDetailActivity.newIntent(mContext, media, mAccessToken);
-                    mContext.startActivity(intent);
+                    if (mIsDualPane) {
+                        mFollowedUserImageListFragment.showTabletFrameLayout(media);
+                    } else {
+                        Intent intent = ImageDetailActivity.newIntent(mContext, media, mAccessToken);
+                        mContext.startActivity(intent);
+                    }
                 }
             });
 
@@ -132,5 +148,14 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
                 notifyItemChanged(i);
             }
         }
+    }
+
+    /**
+     * Clears the adapter when refreshing the data.
+     */
+    public void clear() {
+        int range = mFollowedUsersMedia.size();
+        this.mFollowedUsersMedia.clear();
+        this.notifyItemRangeChanged(0, range);
     }
 }

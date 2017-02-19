@@ -352,7 +352,6 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         isSyncingData = false;
         mProgressBar.setVisibility(View.INVISIBLE);
         mScrollView.setVisibility(View.VISIBLE);
-        mUserSwipeRefreshLayout.setRefreshing(false);
     }
 
     /**
@@ -396,6 +395,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
             }
         }
+
+        mUserSwipeRefreshLayout.setRefreshing(false);
     }
 
     /**
