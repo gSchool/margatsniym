@@ -133,7 +133,6 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
 
     /**
      * Update the media at a certain point.
-     *
      * Has to check the inner list and update that.
      *
      * @param media The media to be updated.

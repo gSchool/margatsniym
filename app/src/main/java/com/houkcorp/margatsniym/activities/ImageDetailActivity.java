@@ -75,7 +75,7 @@ public class ImageDetailActivity extends AppCompatActivity {
 
     /**
      * Sets the Media of the Detail.
-     * B
+     *
      * @param media The media to display.
      */
     public void setMedia(Media media) {

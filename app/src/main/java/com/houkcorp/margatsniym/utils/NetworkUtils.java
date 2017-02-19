@@ -13,7 +13,6 @@ public class NetworkUtils {
      * Checks to see whether or not the device is online.
      *
      * @param context The context from the calling Fragment/Activity
-     *
      * @return A boolean value stating whether or not the device is online.
      */
     public static boolean isOnline(Context context) {

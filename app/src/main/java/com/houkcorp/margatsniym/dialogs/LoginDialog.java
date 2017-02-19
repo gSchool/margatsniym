@@ -26,7 +26,7 @@ public class LoginDialog extends DialogFragment {
 
     private String mAccessToken;
 
-    public static LoginDialog newInstance(){
+    public static LoginDialog newInstance() {
         return new LoginDialog();
     }
 

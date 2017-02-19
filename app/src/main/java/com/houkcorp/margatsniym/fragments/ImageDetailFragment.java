@@ -159,7 +159,7 @@ public class ImageDetailFragment extends Fragment {
 
                 // Fetch the address lines using getAddressLine,
                 // join them, and send them to the thread.
-                for(int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                     addressparts.add(address.getAddressLine(i));
                 }
 

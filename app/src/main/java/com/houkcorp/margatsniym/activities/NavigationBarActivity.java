@@ -110,7 +110,7 @@ public class NavigationBarActivity extends AppCompatActivity {
      * @param event The event being returned.  Holds the Access Key.
      */
     @Subscribe
-    public void onEvent(LoginEvent event){
+    public void onEvent(LoginEvent event) {
         // Dismiss the dialog.
         mDialogFragment.dismiss();
         mAccessToken = event.getAccessToken();
@@ -140,7 +140,7 @@ public class NavigationBarActivity extends AppCompatActivity {
         }
 
         // If not currently updating token, Launch login dialog.
-        if (!mAuthRunning){
+        if (!mAuthRunning) {
             fragmentTransaction.remove(mDialogFragment);
             mAuthRunning = true;
             mDialogFragment.show(fragmentTransaction, "loginFrag");

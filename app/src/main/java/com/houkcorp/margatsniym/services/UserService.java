@@ -51,14 +51,14 @@ public interface UserService {
     );
 
     @POST("media/{media_id}/likes")
-    Observable<Response<MediaResponse>> likeMedia (
+    Observable<Response<MediaResponse>> likeMedia(
             @Path("media_id") String mediaId,
             @Query(ACCESS_TOKEN_QUERY) String accessToken,
             @Body String empty
     );
 
     @DELETE("media/{media_id}/likes")
-    Observable<Response<MediaResponse>> unLikeMedia (
+    Observable<Response<MediaResponse>> unLikeMedia(
             @Path("media_id") String mediaId,
             @Query(ACCESS_TOKEN_QUERY) String accessToken
     );
