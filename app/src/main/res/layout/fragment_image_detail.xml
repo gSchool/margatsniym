@@ -38,20 +38,24 @@
                     android:textSize="@dimen/thirty_sp" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/image_detail_image_view"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/three_hundred_fifty_dp"
-                android:layout_gravity="top|center"
-                android:contentDescription="@string/selected_image"
-                android:visibility="gone" />
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/image_detail_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/three_hundred_fifty_dp"
+                    android:layout_gravity="top|center"
+                    android:contentDescription="@string/selected_image"
+                    android:visibility="gone" />
 
-            <VideoView
-                android:id="@+id/image_detail_video_view"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/four_hundred_dp"
-                android:layout_gravity="top|center"
-                android:visibility="gone" />
+                <VideoView
+                    android:id="@+id/image_detail_video_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/four_hundred_dp"
+                    android:layout_gravity="top|center"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
