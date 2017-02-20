@@ -24,35 +24,35 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="@dimen/my_info_basic_header_layout_height"
                     android:background="@color/white"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/my_user_image_view"
-                        android:layout_width="@dimen/seventy_five_dp"
-                        android:layout_height="@dimen/one_hundred_dp"
-                        android:layout_marginEnd="@dimen/image_view_margin"
-                        android:layout_marginLeft="@dimen/image_view_margin"
-                        android:layout_marginRight="@dimen/image_view_margin"
-                        android:layout_marginStart="@dimen/image_view_margin"
+                        android:layout_width="@dimen/my_info_user_image_width"
+                        android:layout_height="@dimen/my_info_user_image_height"
+                        android:layout_marginEnd="@dimen/my_info_user_image_margin"
+                        android:layout_marginLeft="@dimen/my_info_user_image_margin"
+                        android:layout_marginRight="@dimen/my_info_user_image_margin"
+                        android:layout_marginStart="@dimen/my_info_user_image_margin"
                         android:contentDescription="@string/profile_image"
-                        android:paddingBottom="@dimen/medium_margin"
-                        android:paddingTop="@dimen/medium_margin" />
+                        android:paddingBottom="@dimen/my_info_user_image_padding"
+                        android:paddingTop="@dimen/my_info_user_image_padding" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/small_margin"
-                        android:layout_marginRight="@dimen/small_margin"
-                        android:layout_marginTop="@dimen/medium_margin"
+                        android:layout_marginEnd="@dimen/my_info_user_name_right_margin"
+                        android:layout_marginRight="@dimen/my_info_user_name_right_margin"
+                        android:layout_marginTop="@dimen/my_info_user_name_top_margin"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/my_user_name_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/large_text" />
+                            android:textSize="@dimen/my_info_user_name_text_size" />
 
                         <TextView
                             android:id="@+id/my_user_website_text_view"
@@ -68,44 +68,44 @@
                     android:id="@+id/my_user_bio_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/my_info_bio_layout_top_margin"
                     android:orientation="vertical"
                     android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/mini_margin"
-                        android:layout_marginLeft="@dimen/medium_margin"
-                        android:layout_marginStart="@dimen/medium_margin"
-                        android:paddingEnd="@dimen/small_margin"
-                        android:paddingLeft="@dimen/small_margin"
-                        android:paddingRight="@dimen/small_margin"
-                        android:paddingStart="@dimen/small_margin"
+                        android:layout_marginBottom="@dimen/my_info_header_bottom_margin"
+                        android:layout_marginLeft="@dimen/my_info_header_left_margin"
+                        android:layout_marginStart="@dimen/my_info_header_left_margin"
+                        android:paddingEnd="@dimen/my_info_header_padding"
+                        android:paddingLeft="@dimen/my_info_header_padding"
+                        android:paddingRight="@dimen/my_info_header_padding"
+                        android:paddingStart="@dimen/my_info_header_padding"
                         android:text="@string/bio"
                         android:textColor="@color/header_gray"
-                        android:textSize="@dimen/medium_text"
+                        android:textSize="@dimen/my_info_header_text_size"
                         android:textStyle="bold" />
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/my_user_bio_card_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/medium_margin"
-                        android:layout_marginLeft="@dimen/medium_margin"
-                        android:layout_marginRight="@dimen/medium_margin"
-                        android:layout_marginStart="@dimen/medium_margin">
+                        android:layout_marginEnd="@dimen/my_info_card_view_margin"
+                        android:layout_marginLeft="@dimen/my_info_card_view_margin"
+                        android:layout_marginRight="@dimen/my_info_card_view_margin"
+                        android:layout_marginStart="@dimen/my_info_card_view_margin">
 
                         <TextView
                             android:id="@+id/my_user_bio_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/small_margin"
-                            android:layout_marginTop="@dimen/small_margin"
-                            android:paddingEnd="@dimen/small_margin"
-                            android:paddingLeft="@dimen/small_margin"
-                            android:paddingRight="@dimen/small_margin"
-                            android:paddingStart="@dimen/small_margin"
+                            android:layout_marginBottom="@dimen/my_info_bio_text_margin"
+                            android:layout_marginTop="@dimen/my_info_bio_text_margin"
+                            android:paddingEnd="@dimen/my_info_bio_text_padding"
+                            android:paddingLeft="@dimen/my_info_bio_text_padding"
+                            android:paddingRight="@dimen/my_info_bio_text_padding"
+                            android:paddingStart="@dimen/my_info_bio_text_padding"
                             android:textSize="@dimen/small_text" />
                     </android.support.v7.widget.CardView>
                 </LinearLayout>
@@ -121,16 +121,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/mini_margin"
-                        android:layout_marginEnd="@dimen/medium_margin"
-                        android:layout_marginLeft="@dimen/medium_margin"
-                        android:layout_marginRight="@dimen/medium_margin"
-                        android:layout_marginStart="@dimen/medium_margin"
+                        android:layout_marginBottom="@dimen/my_info_header_bottom_margin"
+                        android:layout_marginEnd="@dimen/my_info_header_left_margin"
+                        android:layout_marginLeft="@dimen/my_info_header_left_margin"
+                        android:layout_marginRight="@dimen/my_info_header_left_margin"
+                        android:layout_marginStart="@dimen/my_info_header_left_margin"
                         android:orientation="horizontal"
-                        android:paddingEnd="@dimen/small_margin"
-                        android:paddingLeft="@dimen/small_margin"
-                        android:paddingRight="@dimen/small_margin"
-                        android:paddingStart="@dimen/small_margin">
+                        android:paddingEnd="@dimen/my_info_header_padding"
+                        android:paddingLeft="@dimen/my_info_header_padding"
+                        android:paddingRight="@dimen/my_info_header_padding"
+                        android:paddingStart="@dimen/my_info_header_padding">
 
                         <TextView
                             android:layout_width="0dp"
@@ -139,7 +139,7 @@
                             android:maxLines="1"
                             android:text="@string/images_header"
                             android:textColor="@color/header_gray"
-                            android:textSize="@dimen/medium_text"
+                            android:textSize="@dimen/my_info_header_text_size"
                             android:textStyle="bold" />
 
                         <TextView
@@ -149,7 +149,7 @@
                             android:maxLines="1"
                             android:text="@string/following_header"
                             android:textColor="@color/header_gray"
-                            android:textSize="@dimen/medium_text"
+                            android:textSize="@dimen/my_info_header_text_size"
                             android:textStyle="bold" />
 
                         <TextView
@@ -158,7 +158,7 @@
                             android:layout_weight=".33"
                             android:text="@string/following_you"
                             android:textColor="@color/header_gray"
-                            android:textSize="@dimen/medium_text"
+                            android:textSize="@dimen/my_info_header_text_size"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -166,16 +166,16 @@
                         android:id="@+id/my_user_counts_card_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/medium_margin"
-                        android:layout_marginLeft="@dimen/medium_margin"
-                        android:layout_marginRight="@dimen/medium_margin"
-                        android:layout_marginStart="@dimen/medium_margin">
+                        android:layout_marginEnd="@dimen/my_info_card_view_margin"
+                        android:layout_marginLeft="@dimen/my_info_card_view_margin"
+                        android:layout_marginRight="@dimen/my_info_card_view_margin"
+                        android:layout_marginStart="@dimen/my_info_card_view_margin">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/small_margin"
-                            android:layout_marginTop="@dimen/small_margin"
+                            android:layout_marginBottom="@dimen/my_info_count_card_layout_margin"
+                            android:layout_marginTop="@dimen/my_info_count_card_layout_margin"
                             android:orientation="horizontal">
 
                             <TextView
@@ -183,7 +183,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".33"
-                                android:textSize="@dimen/small_text" />
+                                android:textSize="@dimen/my_info_count_text_size" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -197,7 +197,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".32"
-                                android:textSize="@dimen/small_text" />
+                                android:textSize="@dimen/my_info_count_text_size" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -211,7 +211,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".33"
-                                android:textSize="@dimen/small_text" />
+                                android:textSize="@dimen/my_info_count_text_size" />
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                 </LinearLayout>
@@ -220,24 +220,24 @@
                     android:id="@+id/my_user_recent_media_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/medium_margin"
-                    android:layout_marginTop="@dimen/medium_margin"
+                    android:layout_marginBottom="@dimen/my_user_media_layout_margin"
+                    android:layout_marginTop="@dimen/my_user_media_layout_margin"
                     android:orientation="vertical"
                     android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/mini_margin"
-                        android:layout_marginLeft="@dimen/medium_margin"
-                        android:layout_marginStart="@dimen/medium_margin"
-                        android:paddingEnd="@dimen/small_margin"
-                        android:paddingLeft="@dimen/small_margin"
-                        android:paddingRight="@dimen/small_margin"
-                        android:paddingStart="@dimen/small_margin"
+                        android:layout_marginBottom="@dimen/my_info_header_bottom_margin"
+                        android:layout_marginLeft="@dimen/my_info_header_left_margin"
+                        android:layout_marginStart="@dimen/my_info_header_left_margin"
+                        android:paddingEnd="@dimen/my_info_header_padding"
+                        android:paddingLeft="@dimen/my_info_header_padding"
+                        android:paddingRight="@dimen/my_info_header_padding"
+                        android:paddingStart="@dimen/my_info_header_padding"
                         android:text="@string/recent_media"
                         android:textColor="@color/header_gray"
-                        android:textSize="@dimen/medium_text"
+                        android:textSize="@dimen/my_info_header_text_size"
                         android:textStyle="bold" />
 
                     <FrameLayout
@@ -250,23 +250,23 @@
                     android:id="@+id/my_user_liked_media_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:layout_marginBottom="@dimen/my_user_media_layout_margin"
                     android:orientation="vertical"
                     android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/mini_margin"
-                        android:layout_marginLeft="@dimen/medium_margin"
-                        android:layout_marginStart="@dimen/medium_margin"
-                        android:paddingEnd="@dimen/small_margin"
-                        android:paddingLeft="@dimen/small_margin"
-                        android:paddingRight="@dimen/small_margin"
-                        android:paddingStart="@dimen/small_margin"
+                        android:layout_marginBottom="@dimen/my_info_header_bottom_margin"
+                        android:layout_marginLeft="@dimen/my_info_header_left_margin"
+                        android:layout_marginStart="@dimen/my_info_header_left_margin"
+                        android:paddingEnd="@dimen/my_info_header_padding"
+                        android:paddingLeft="@dimen/my_info_header_padding"
+                        android:paddingRight="@dimen/my_info_header_padding"
+                        android:paddingStart="@dimen/my_info_header_padding"
                         android:text="@string/liked_media"
                         android:textColor="@color/header_gray"
-                        android:textSize="@dimen/medium_text"
+                        android:textSize="@dimen/my_info_header_text_size"
                         android:textStyle="bold" />
 
                     <FrameLayout
@@ -283,6 +283,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:indeterminate="true"
-            android:padding="@dimen/twelve_dp" />
+            android:padding="@dimen/my_user_progress_bar_padding" />
     </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>
