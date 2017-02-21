@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/followed_user_image_view_bottom_margin">
 
         <ImageView
             android:id="@+id/followed_user_image_view"
@@ -19,6 +20,7 @@
             android:layout_marginLeft="@dimen/followed_user_image_view_margin"
             android:layout_marginRight="@dimen/followed_user_image_view_margin"
             android:layout_marginStart="@dimen/followed_user_image_view_margin"
+            android:layout_marginTop="@dimen/followed_user_image_view_bottom_margin"
             android:contentDescription="@string/profile_image" />
 
         <TextView

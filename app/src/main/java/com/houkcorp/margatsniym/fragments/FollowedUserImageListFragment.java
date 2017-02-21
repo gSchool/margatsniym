@@ -90,7 +90,7 @@ public class FollowedUserImageListFragment extends Fragment implements SwipeRefr
 
         // Hide the recycler view and show the progress bar.
         mFollowedProgressBar.setVisibility(View.VISIBLE);
-        mFollowedRecyclerView.setVisibility(View.GONE);
+        mFollowedSwipeRefreshLayout.setVisibility(View.INVISIBLE);
 
         if (getArguments() != null) {
             mAccessToken = getArguments().getString(MyUserFragment.INSTAGRAM_ACCESS_TOKEN);
@@ -120,7 +120,7 @@ public class FollowedUserImageListFragment extends Fragment implements SwipeRefr
     public void onRefresh() {
         if (!isSyncingData) {
             isSyncingData = true;
-            mFollowedRecyclerView.setVisibility(View.GONE);
+            mFollowedSwipeRefreshLayout.setVisibility(View.INVISIBLE);
             mFollowedProgressBar.setVisibility(View.VISIBLE);
             mFollowedUsersMedia = new ArrayList<>();
             mFollowedRecyclerAdapter.clear();
@@ -219,8 +219,8 @@ public class FollowedUserImageListFragment extends Fragment implements SwipeRefr
             mFollowedRecyclerAdapter.addFollowedUsers(mFollowedUsersMedia);
         }
 
-        mFollowedRecyclerView.setVisibility(View.VISIBLE);
-        mFollowedProgressBar.setVisibility(View.GONE);
+        mFollowedSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        mFollowedProgressBar.setVisibility(View.INVISIBLE);
         isSyncingData = false;
     }
 

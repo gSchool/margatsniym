@@ -3,6 +3,7 @@
     <!--Followed User Image List Frag-->
     <dimen name="followed_user_progress_bar_padding">12dp</dimen>
     <dimen name="followed_user_swipe_width">400dp</dimen>
+    <dimen name="followed_user_top_margin">10dp</dimen>
 
     <!--Images Grid View Frag-->
     <dimen name="media_card_view_margin">10dp</dimen>
@@ -25,12 +26,13 @@
     <dimen name="detail_location_text_size">14sp</dimen>
     <dimen name="detail_image_liked_size">30dp</dimen>
 
-    <!--Item Followed User Dimensions-->
+    <!--Item Followed User-->
     <dimen name="followed_user_linear_layout">5dp</dimen>
     <dimen name="main_layout_bottom_padding">10dp</dimen>
     <dimen name="followed_user_image_view_width">75dp</dimen>
     <dimen name="followed_user_image_view_height">75dp</dimen>
     <dimen name="followed_user_image_view_margin">15dp</dimen>
+    <dimen name="followed_user_image_view_bottom_margin">5dp</dimen>
     <dimen name="followed_user_text_view_padding_top">20dp</dimen>
     <dimen name="followed_user_text_view_text_size">20sp</dimen>
 

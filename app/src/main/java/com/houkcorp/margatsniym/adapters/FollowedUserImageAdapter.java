@@ -15,6 +15,7 @@ import com.houkcorp.margatsniym.activities.ImageDetailActivity;
 import com.houkcorp.margatsniym.fragments.FollowedUserImageListFragment;
 import com.houkcorp.margatsniym.models.Media;
 import com.houkcorp.margatsniym.models.User;
+import com.houkcorp.margatsniym.transformations.CircleTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
         Picasso
                 .with(mContext)
                 .load(user.getProfilePicture())
+                .transform(new CircleTransformation())
                 .into(holder.mImageView);
 
         holder.mNameTextView.setText(user.getFullName());
