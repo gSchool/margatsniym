@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/medium_margin">
+    android:paddingBottom="@dimen/main_layout_bottom_padding">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -13,20 +13,20 @@
 
         <ImageView
             android:id="@+id/followed_user_image_view"
-            android:layout_width="@dimen/fifty_dp"
-            android:layout_height="@dimen/seventy_five_dp"
-            android:layout_marginEnd="@dimen/image_view_margin"
-            android:layout_marginLeft="@dimen/image_view_margin"
-            android:layout_marginRight="@dimen/image_view_margin"
-            android:layout_marginStart="@dimen/image_view_margin"
+            android:layout_width="@dimen/followed_user_image_view_width"
+            android:layout_height="@dimen/followed_user_image_view_height"
+            android:layout_marginEnd="@dimen/followed_user_image_view_margin"
+            android:layout_marginLeft="@dimen/followed_user_image_view_margin"
+            android:layout_marginRight="@dimen/followed_user_image_view_margin"
+            android:layout_marginStart="@dimen/followed_user_image_view_margin"
             android:contentDescription="@string/profile_image" />
 
         <TextView
             android:id="@+id/followed_user_name_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/twenty_dp"
-            android:textSize="@dimen/large_text" />
+            android:paddingTop="@dimen/followed_user_text_view_padding_top"
+            android:textSize="@dimen/followed_user_text_view_text_size" />
     </LinearLayout>
 
     <HorizontalScrollView
@@ -39,10 +39,10 @@
             android:id="@+id/followed_user_linear_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/small_margin"
-            android:paddingRight="@dimen/small_margin"
-            android:paddingLeft="@dimen/small_margin"
-            android:paddingStart="@dimen/small_margin"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/followed_user_linear_layout"
+            android:paddingLeft="@dimen/followed_user_linear_layout"
+            android:paddingRight="@dimen/followed_user_linear_layout"
+            android:paddingStart="@dimen/followed_user_linear_layout" />
     </HorizontalScrollView>
 </LinearLayout>

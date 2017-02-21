@@ -4,7 +4,6 @@
 
     <string name="bio">\tBio:</string>
 
-    <string name="liked">Liked Icon</string>
     <string name="following">Following</string>
     <string name="following_header">\tFollowing:</string>
     <string name="following_you">\tFollowed by:</string>
@@ -13,7 +12,9 @@
     <string name="images">Images</string>
     <string name="images_header">\tImages:</string>
 
+    <string name="liked">Liked Icon</string>
     <string name="liked_media">Liked:</string>
+    <string name="location">Location:</string>
     <string name="login_failed">Login failed.  Please try again later.</string>
     <string name="logout">Log out</string>
 
@@ -36,7 +37,6 @@
     <string name="user_thumbnail">Users thumbnail image</string>
 
     <string name="vertical_bar">|</string>
-    <string name="location">Location:</string>
 
     <string-array name="multi_select_list_preference_default_value" />
 </resources>

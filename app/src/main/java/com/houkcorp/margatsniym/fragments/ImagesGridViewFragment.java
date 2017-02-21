@@ -3,6 +3,8 @@ package com.houkcorp.margatsniym.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,21 +25,24 @@ import butterknife.ButterKnife;
 public class ImagesGridViewFragment extends Fragment {
     public static final String ACCESS_TOKEN_EXTRAS = "ACCESS_KEY_EXTRAS";
     public static final String IS_DUAL_PANE_EXTRAS = "IS_DUAL_PANE_EXTRAS";
+    public static final String IS_FIRST_LOAD_EXTRAS = "IS_FIRST_LOAD_EXTRAS";
     public static final String MEDIA_EXTRAS = "MEDIA_EXTRAS";
 
     private ArrayList<Media> mMedia = new ArrayList<>();
     private boolean mIsDualPane;
+    private boolean mIsFirstLoad;
     private ImageAdapter mAdapter;
     private MyUserFragment mMyUserFragment;
     private String mAccessToken;
 
     @BindView(R.id.images_grid_view) GridView mImagesGridView;
 
-    public static ImagesGridViewFragment newInstance(ArrayList<Media> media, String accessToken, boolean isDualPane) {
+    public static ImagesGridViewFragment newInstance(ArrayList<Media> media, String accessToken, boolean isDualPane, boolean isFirstLoad) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(MEDIA_EXTRAS, media);
         args.putString(ACCESS_TOKEN_EXTRAS, accessToken);
         args.putBoolean(IS_DUAL_PANE_EXTRAS, isDualPane);
+        args.putBoolean(IS_FIRST_LOAD_EXTRAS, isFirstLoad);
 
         ImagesGridViewFragment imagesGridViewFragment = new ImagesGridViewFragment();
         imagesGridViewFragment.setArguments(args);
@@ -48,6 +53,11 @@ public class ImagesGridViewFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.following));
+        }
     }
 
     @Nullable
@@ -61,10 +71,11 @@ public class ImagesGridViewFragment extends Fragment {
             mMedia = getArguments().getParcelableArrayList(MEDIA_EXTRAS);
             mAccessToken = getArguments().getString(ACCESS_TOKEN_EXTRAS);
             mIsDualPane = getArguments().getBoolean(IS_DUAL_PANE_EXTRAS);
+            mIsFirstLoad = getArguments().getBoolean(IS_FIRST_LOAD_EXTRAS);
         }
 
         //Adding the adapter
-        mAdapter = new ImageAdapter(getActivity(), mMedia, mAccessToken, mIsDualPane, mMyUserFragment);
+        mAdapter = new ImageAdapter(getActivity(), mMedia, mAccessToken, mIsDualPane, mMyUserFragment, mIsFirstLoad);
         mImagesGridView.setAdapter(mAdapter);
 
         return root;

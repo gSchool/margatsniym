@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -90,7 +91,10 @@ public class ImageDetailFragment extends Fragment {
         }
 
         if (!TextUtils.isEmpty(mMedia.getCaption().getText())) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mMedia.getCaption().getText());
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle(mMedia.getCaption().getText());
+            }
         }
 
         Picasso
@@ -159,7 +163,7 @@ public class ImageDetailFragment extends Fragment {
 
                 // Fetch the address lines using getAddressLine,
                 // join them, and send them to the thread.
-                for(int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                     addressparts.add(address.getAddressLine(i));
                 }
 

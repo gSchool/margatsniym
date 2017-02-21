@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -29,6 +31,7 @@ import com.houkcorp.margatsniym.models.MediaResponse;
 import com.houkcorp.margatsniym.models.User;
 import com.houkcorp.margatsniym.services.ServiceFactory;
 import com.houkcorp.margatsniym.services.UserService;
+import com.houkcorp.margatsniym.transformations.CircleTransformation;
 import com.houkcorp.margatsniym.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -55,6 +58,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public static final String INSTAGRAM_ACCESS_TOKEN = "INSTAGRAM_ACCESS_TOKEN";
 
     private boolean isDualPane = false;
+    private boolean isFirstLoad = false;
     private boolean isSyncingData = false;
     private ImagesGridViewFragment mUsersLikedMediaFragment;
     private ImagesGridViewFragment mUsersRecentMediaFragment;
@@ -89,6 +93,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.my_user));
+        }
+
         EventBus.getDefault().register(this);
     }
 
@@ -110,7 +119,6 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
             if (NetworkUtils.isOnline(getContext())) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 mScrollView.setVisibility(View.INVISIBLE);
-                retrieveBasicUserInfo();
             } else {
                 Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
             }
@@ -135,6 +143,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Listens for media to be liked or unliked and makes changes on the data.
+     *
+     * @param event The liked/unliked media.
+     */
     @Subscribe
     public void onEvent(MediaChangedEvent event) {
         isSyncingData = true;
@@ -190,12 +203,10 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
      * @param user THe user returned from the server.
      */
     private void showUserInfo(User user) {
-        //TODO: Need to look at and fix the centerCrop.
         Picasso
                 .with(getContext())
                 .load(user.getProfilePicture())
-                .resize(75, 100)
-                .centerCrop()
+                .transform(new CircleTransformation())
                 .into(mUserImageView);
 
         mNameTextView.setText(user.getFullName());
@@ -277,7 +288,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         if (media != null && media.size() > 0) {
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
             List<Media> mediaSubLists = media.subList(0, maxCount);
-            mUsersRecentMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<Media>(mediaSubLists), mAccessToken, isDualPane);
+            isFirstLoad = true;
+            mUsersRecentMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists), mAccessToken, isDualPane, isFirstLoad);
             mUsersRecentMediaFragment.setMyUserFragment(this);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_recent_media_frame_layout, mUsersRecentMediaFragment).commit();
             mRecentMediaLinearLayout.setVisibility(View.VISIBLE);
@@ -339,7 +351,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
             // Just a sanity check for now to make sure only 20 come back.
             int maxCount = media.size() < 20 ? media.size() : MAX_LIST_COUNT;
             List<Media> mediaSubLists = media.subList(0, maxCount);
-            mUsersLikedMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists), mAccessToken, isDualPane);
+            isFirstLoad = !isFirstLoad;
+            mUsersLikedMediaFragment = ImagesGridViewFragment.newInstance(new ArrayList<>(mediaSubLists), mAccessToken, isDualPane, isFirstLoad);
             mUsersLikedMediaFragment.setMyUserFragment(this);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.my_user_liked_media_frame_layout, mUsersLikedMediaFragment).commit();
             mLikedMediaLinearLayout.setVisibility(View.VISIBLE);
@@ -350,7 +363,6 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         isSyncingData = false;
         mProgressBar.setVisibility(View.INVISIBLE);
         mScrollView.setVisibility(View.VISIBLE);
-        mUserSwipeRefreshLayout.setRefreshing(false);
     }
 
     /**
@@ -371,6 +383,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onRefresh() {
         if (!isSyncingData) {
             isSyncingData = true;
+            isFirstLoad = false;
 
             mProgressBar.setVisibility(View.VISIBLE);
             mScrollView.setVisibility(View.INVISIBLE);
@@ -393,6 +406,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
             }
         }
+
+        mUserSwipeRefreshLayout.setRefreshing(false);
     }
 
     /**

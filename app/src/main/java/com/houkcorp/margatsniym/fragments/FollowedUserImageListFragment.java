@@ -3,6 +3,7 @@ package com.houkcorp.margatsniym.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -45,13 +47,17 @@ import rx.schedulers.Schedulers;
 /**
  * A Recycler view of max 20 users and max 5 images that are followed by the logged in user.
  */
-public class FollowedUserImageListFragment extends Fragment {
+public class FollowedUserImageListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private ArrayList<ArrayList<Media>> mFollowedUsersMedia = new ArrayList<>();
+    private boolean isDualPane = false;
+    private boolean isFirstLoad = false;
+    private boolean isSyncingData = false;
     private FollowedUserImageAdapter mFollowedRecyclerAdapter;
     private String mAccessToken;
 
     @BindView(R.id.followed_users_progress_bar) ProgressBar mFollowedProgressBar;
     @BindView(R.id.followed_users_recycler_view) RecyclerView mFollowedRecyclerView;
+    @BindView(R.id.followed_users_swipe_refresh_layout) SwipeRefreshLayout mFollowedSwipeRefreshLayout;
 
     /**
      * Retrieve a new instance of FollowedUserImageListFragment
@@ -91,17 +97,39 @@ public class FollowedUserImageListFragment extends Fragment {
             mAccessToken = getArguments().getString(MyUserFragment.INSTAGRAM_ACCESS_TOKEN);
         }
 
+        mFollowedSwipeRefreshLayout.setOnRefreshListener(this);
+
         mFollowedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mFollowedRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mFollowedRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
-        mFollowedRecyclerAdapter = new FollowedUserImageAdapter(getContext(), new ArrayList<ArrayList<Media>>(), mAccessToken);
+        FrameLayout frameLayout = (FrameLayout) root.findViewById(R.id.followed_users_liked_media_frame_layout);
+        if (frameLayout != null) {
+            isDualPane = true;
+        }
+
+        mFollowedRecyclerAdapter = new FollowedUserImageAdapter(getContext(), new ArrayList<ArrayList<Media>>(), mAccessToken, isDualPane, this, true);
         mFollowedRecyclerView.setAdapter(mFollowedRecyclerAdapter);
 
         retrieveFollowedMedia();
 
         return root;
+    }
+
+    @Override
+    public void onRefresh() {
+        if (!isSyncingData) {
+            isSyncingData = true;
+            mFollowedRecyclerView.setVisibility(View.GONE);
+            mFollowedProgressBar.setVisibility(View.VISIBLE);
+            mFollowedUsersMedia = new ArrayList<>();
+            mFollowedRecyclerAdapter.clear();
+
+            retrieveFollowedMedia();
+        }
+
+        mFollowedSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -111,6 +139,11 @@ public class FollowedUserImageListFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * Catches changed media event.
+     *
+     * @param event The media to update.
+     */
     @Subscribe
     public void onEvent(MediaChangedEvent event) {
         updateMediaContent(event.getMedia());
@@ -194,6 +227,7 @@ public class FollowedUserImageListFragment extends Fragment {
 
         mFollowedRecyclerView.setVisibility(View.VISIBLE);
         mFollowedProgressBar.setVisibility(View.GONE);
+        isSyncingData = false;
     }
 
     /**
@@ -203,5 +237,13 @@ public class FollowedUserImageListFragment extends Fragment {
      */
     private void updateMediaContent(Media media) {
         mFollowedRecyclerAdapter.updateMediaContent(media);
+    }
+
+    /**
+     * Loads the view in the Master/Detail style from the Adapter
+     */
+    public void showTabletFrameLayout(Media media) {
+        ImageDetailFragment imageDetailFragment = ImageDetailFragment.newInstance(media, mAccessToken);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.followed_users_liked_media_frame_layout, imageDetailFragment).commit();
     }
 }
