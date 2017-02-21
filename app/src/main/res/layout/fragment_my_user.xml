@@ -2,26 +2,25 @@
 
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/my_user_swipe_refresh_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/light_gray">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <ScrollView
-            android:id="@+id/my_user_scroll_view"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:visibility="invisible">
+            android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/my_user_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gray"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -273,14 +272,14 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
 
-        <ProgressBar
-            android:id="@+id/my_user_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:indeterminate="true"
-            android:padding="@dimen/my_user_progress_bar_padding" />
-    </RelativeLayout>
+            <ProgressBar
+                android:id="@+id/my_user_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminate="true"
+                android:padding="@dimen/my_user_progress_bar_padding" />
+        </RelativeLayout>
+    </ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

@@ -50,7 +50,6 @@ import rx.schedulers.Schedulers;
 public class FollowedUserImageListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private ArrayList<ArrayList<Media>> mFollowedUsersMedia = new ArrayList<>();
     private boolean isDualPane = false;
-    private boolean isFirstLoad = false;
     private boolean isSyncingData = false;
     private FollowedUserImageAdapter mFollowedRecyclerAdapter;
     private String mAccessToken;
@@ -139,11 +138,6 @@ public class FollowedUserImageListFragment extends Fragment implements SwipeRefr
         EventBus.getDefault().unregister(this);
     }
 
-    /**
-     * Catches changed media event.
-     *
-     * @param event The media to update.
-     */
     @Subscribe
     public void onEvent(MediaChangedEvent event) {
         updateMediaContent(event.getMedia());

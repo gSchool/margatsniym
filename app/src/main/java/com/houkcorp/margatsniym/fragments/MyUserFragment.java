@@ -70,9 +70,9 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @BindView(R.id.my_user_bio_linear_layout) LinearLayout mBioLinearLayout;
     @BindView(R.id.my_user_counts_linear_layout) LinearLayout mCountsLinearLayout;
     @BindView(R.id.my_user_liked_media_linear_layout) LinearLayout mLikedMediaLinearLayout;
+    @BindView(R.id.my_user_linear_layout) LinearLayout mUserLayout;
     @BindView(R.id.my_user_recent_media_linear_layout) LinearLayout mRecentMediaLinearLayout;
     @BindView(R.id.my_user_progress_bar) ProgressBar mProgressBar;
-    @BindView(R.id.my_user_scroll_view) ScrollView mScrollView;
     @BindView(R.id.my_user_swipe_refresh_layout) SwipeRefreshLayout mUserSwipeRefreshLayout;
     @BindView(R.id.my_user_bio_text_view) TextView mBioTextView;
     @BindView(R.id.my_user_followed_by_text_view) TextView mFollowedByTextView;
@@ -118,7 +118,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         if (!TextUtils.isEmpty(mAccessToken)) {
             if (NetworkUtils.isOnline(getContext())) {
                 mProgressBar.setVisibility(View.VISIBLE);
-                mScrollView.setVisibility(View.INVISIBLE);
+                mUserLayout.setVisibility(View.INVISIBLE);
             } else {
                 Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
             }
@@ -362,7 +362,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         isSyncingData = false;
         mProgressBar.setVisibility(View.INVISIBLE);
-        mScrollView.setVisibility(View.VISIBLE);
+        mUserLayout.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -386,7 +386,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
             isFirstLoad = false;
 
             mProgressBar.setVisibility(View.VISIBLE);
-            mScrollView.setVisibility(View.INVISIBLE);
+            mUserLayout.setVisibility(View.INVISIBLE);
 
             mUserImageView.setImageResource(0);
             mNameTextView.setText("");
