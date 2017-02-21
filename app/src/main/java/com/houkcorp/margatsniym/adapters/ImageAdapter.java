@@ -2,18 +2,23 @@ package com.houkcorp.margatsniym.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.activities.ImageDetailActivity;
 import com.houkcorp.margatsniym.fragments.MyUserFragment;
 import com.houkcorp.margatsniym.models.Media;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ImageAdapter extends BaseAdapter {
     private ArrayList<Media> mMedia;
@@ -22,6 +27,8 @@ public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private MyUserFragment mMyUserFragment;
     private String mAccessToken;
+
+    @BindView(R.id.image_image_view) ImageView mImageImageView;
 
     public ImageAdapter(Context context, ArrayList<Media> media, String acessToken, boolean isDualPane, MyUserFragment myUserFragment, boolean isFirstLoad) {
         mMedia = media;
@@ -49,25 +56,16 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, final View convertView, ViewGroup parent) {
-        ImageView imageView;
+        View root = LayoutInflater.from(mContext).inflate(R.layout.item_image_view, parent, false);
 
-        if (convertView == null) {
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
-        } else {
-            imageView = (ImageView) convertView;
-        }
+        ButterKnife.bind(this, root);
 
         final Media media = mMedia.get(position);
 
         Picasso
                 .with(mContext)
                 .load(media.getImages().getThumbnail().getUrl())
-                .resize(200, 200)
-                .centerCrop()
-                .into(imageView);
+                .into(mImageImageView);
 
         if (position == 0 && mIsDualPane && mIsFirstLoad) {
             mIsFirstLoad = false;
@@ -75,7 +73,7 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         // Launches a detail view of the selected image.
-        imageView.setOnClickListener(new View.OnClickListener() {
+        mImageImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mIsDualPane) {
@@ -87,7 +85,7 @@ public class ImageAdapter extends BaseAdapter {
             }
         });
 
-        return imageView;
+        return root;
     }
 
     /**

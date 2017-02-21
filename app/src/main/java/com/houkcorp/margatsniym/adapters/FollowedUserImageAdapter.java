@@ -60,8 +60,6 @@ public class FollowedUserImageAdapter extends RecyclerView.Adapter<FollowedUserI
         Picasso
                 .with(mContext)
                 .load(user.getProfilePicture())
-                .resize(200, 200)
-                .centerCrop()
                 .into(holder.mImageView);
 
         holder.mNameTextView.setText(user.getFullName());

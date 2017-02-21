@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -29,6 +31,7 @@ import com.houkcorp.margatsniym.models.MediaResponse;
 import com.houkcorp.margatsniym.models.User;
 import com.houkcorp.margatsniym.services.ServiceFactory;
 import com.houkcorp.margatsniym.services.UserService;
+import com.houkcorp.margatsniym.transformations.CircleTransformation;
 import com.houkcorp.margatsniym.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -89,6 +92,11 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.my_user));
+        }
 
         EventBus.getDefault().register(this);
     }
@@ -190,12 +198,10 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
      * @param user THe user returned from the server.
      */
     private void showUserInfo(User user) {
-        //TODO: Need to look at and fix the centerCrop.
         Picasso
                 .with(getContext())
                 .load(user.getProfilePicture())
-                .resize(75, 100)
-                .centerCrop()
+                .transform(new CircleTransformation())
                 .into(mUserImageView);
 
         mNameTextView.setText(user.getFullName());

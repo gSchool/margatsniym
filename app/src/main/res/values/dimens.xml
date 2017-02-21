@@ -1,41 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="app_bar_height">200dp</dimen>
-    <dimen name="item_width">200dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="medium_text">15sp</dimen>
-    <dimen name="image_view_margin">15dp</dimen>
-    <dimen name="small_margin">5dp</dimen>
-    <dimen name="medium_margin">10dp</dimen>
-    <dimen name="mini_margin">2dp</dimen>
-    <dimen name="large_text">20sp</dimen>
-    <dimen name="small_text">12sp</dimen>
-    <dimen name="twenty_dp">20dp</dimen>
-    <dimen name="thirty_sp">30sp</dimen>
-    <dimen name="forty_five_dp">45dp</dimen>
-    <dimen name="fifty_dp">50dp</dimen>
-    <dimen name="twelve_dp">12dp</dimen>
-    <dimen name="four_hundred_dp">400dp</dimen>
-    <dimen name="three_hundred_fifty_dp">350dp</dimen>
-    <dimen name="one_hundred_dp">100dp</dimen>
-    <dimen name="seventy_five_dp">75dp</dimen>
-
-    <!--Item Followed User Dimensions-->
-    <dimen name="followed_user_linear_layout">5dp</dimen>
-    <dimen name="main_layout_bottom_padding">10dp</dimen>
-    <dimen name="followed_user_image_view_width">50dp</dimen>
-    <dimen name="followed_user_image_view_height">75dp</dimen>
-    <dimen name="followed_user_image_view_margin">15dp</dimen>
-    <dimen name="followed_user_text_view_padding_top">20dp</dimen>
-    <dimen name="followed_user_text_view_text_size">20sp</dimen>
+    <!--Followed User Image List Frag-->
+    <dimen name="followed_user_progress_bar_padding">12dp</dimen>
+    <dimen name="followed_user_swipe_width">400dp</dimen>
 
     <!--Images Grid View Frag-->
     <dimen name="media_card_view_margin">10dp</dimen>
-    <dimen name="media_grid_view_column_width">50dp</dimen>
+    <dimen name="media_grid_view_column_width">100dp</dimen>
     <dimen name="media_grid_view_spacing">10dp</dimen>
 
     <!--Image Detail Fragment-->
@@ -51,21 +22,31 @@
     <dimen name="detail_location_layout_top_margin">10dp</dimen>
     <dimen name="detail_location_header_text_size">15sp</dimen>
     <dimen name="detail_progress_bar_padding">12dp</dimen>
+    <dimen name="detail_location_text_size">14sp</dimen>
+    <dimen name="detail_image_liked_size">30dp</dimen>
 
-    <!--Followed User Image List Frag-->
-    <dimen name="followed_user_progress_bar_padding">12dp</dimen>
-    <dimen name="followed_user_swipe_width">400dp</dimen>
+    <!--Item Followed User Dimensions-->
+    <dimen name="followed_user_linear_layout">5dp</dimen>
+    <dimen name="main_layout_bottom_padding">10dp</dimen>
+    <dimen name="followed_user_image_view_width">75dp</dimen>
+    <dimen name="followed_user_image_view_height">75dp</dimen>
+    <dimen name="followed_user_image_view_margin">15dp</dimen>
+    <dimen name="followed_user_text_view_padding_top">20dp</dimen>
+    <dimen name="followed_user_text_view_text_size">20sp</dimen>
+
+    <!--Item Image View-->
+    <dimen name="item_image_size">100dp</dimen>
 
     <!--My User Frag-->
     <dimen name="my_info_swipe_layout_width">400dp</dimen>
     <dimen name="my_info_basic_header_layout_height">100dp</dimen>
     <dimen name="my_info_user_image_width">75dp</dimen>
     <dimen name="my_info_user_image_height">100dp</dimen>
-    <dimen name="my_info_user_image_margin">15dp</dimen>
+    <dimen name="my_info_user_image_margin">10dp</dimen>
     <dimen name="my_info_user_image_padding">10dp</dimen>
-    <dimen name="my_info_user_name_right_margin">5dp</dimen>
     <dimen name="my_info_user_name_top_margin">10dp</dimen>
     <dimen name="my_info_user_name_text_size">20sp</dimen>
+    <dimen name="my_info_web_address_text_size">14sp</dimen>
     <dimen name="my_info_bio_layout_top_margin">10dp</dimen>
     <dimen name="my_info_header_bottom_margin">2dp</dimen>
     <dimen name="my_info_header_left_margin">10dp</dimen>
@@ -73,9 +54,9 @@
     <dimen name="my_info_header_text_size">15sp</dimen>
     <dimen name="my_info_card_view_margin">10dp</dimen>
     <dimen name="my_info_bio_text_margin">5dp</dimen>
-    <dimen name="my_info_bio_text_padding">5dp</dimen>
+    <dimen name="my_info_bio_text_padding">10dp</dimen>
     <dimen name="my_info_count_card_layout_margin">5dp</dimen>
-    <dimen name="my_info_count_text_size">12sp</dimen>
+    <dimen name="my_info_text_size">12sp</dimen>
     <dimen name="my_user_media_layout_margin">10dp</dimen>
     <dimen name="my_user_progress_bar_padding">12dp</dimen>
 </resources>

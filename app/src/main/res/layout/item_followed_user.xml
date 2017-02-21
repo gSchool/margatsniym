@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/followed_user_text_view_padding_top"
-            android:textSize="@dimen/large_text" />
+            android:textSize="@dimen/followed_user_text_view_text_size" />
     </LinearLayout>
 
     <HorizontalScrollView
