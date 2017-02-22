@@ -30,6 +30,8 @@ public class ImageAdapter extends BaseAdapter {
     @BindView(R.id.image_image_view)
     ImageView mImageImageView;
 
+    //TODO: remove the access token.  Could remove some other items and have a listener handle all of the work.  Give the adapter less work.  Just context and media.
+    // Change to recycler View.  Can Dynamically change the way it looks.  Diff util on recycler View.
     public ImageAdapter(Context context, ArrayList<Media> media, String acessToken, boolean isDualPane, MyUserFragment myUserFragment, boolean isFirstLoad) {
         mMedia = media;
         mContext = context;

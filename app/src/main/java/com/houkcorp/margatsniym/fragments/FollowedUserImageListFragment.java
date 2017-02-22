@@ -146,6 +146,7 @@ public class FollowedUserImageListFragment extends Fragment implements SwipeRefr
     /**
      * Uses the User Service to retrieve all users and media from the Instagram API.
      */
+    //TODO: Fix the body type to return the error type correctly
     private void retrieveFollowedMedia() {
         final UserService service = ServiceFactory.getInstagramUserService();
         service.getFollowedUsers(mAccessToken)

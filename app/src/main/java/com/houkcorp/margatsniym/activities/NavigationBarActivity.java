@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
  */
 public class NavigationBarActivity extends AppCompatActivity {
     private static final String FOLLOWING_FRAGMENT = "FOLLOWING_FRAGMENT";
+    private static final String LOGIN_FRAGMENT = "LOGIN_FRAGMENT";
     private static final String MARGATSNIYM_PREF_NAME = "MargatsniymPrefs";
     private static final String MY_USER_FRAGMENT = "MY_USER_FRAGMENT";
     private static final String SELECTED_MENU_ITEM = "SELECTED_MENU_ITEM_ID";
@@ -69,7 +70,7 @@ public class NavigationBarActivity extends AppCompatActivity {
 
         // If the old login dialog is up, find and kill it.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("loginFrag");
+        Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(LOGIN_FRAGMENT);
         if (currentFragment != null) {
             fragmentTransaction.remove(currentFragment);
         }
@@ -78,7 +79,7 @@ public class NavigationBarActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(mAccessToken)) {
             mAuthRunning = true;
             mDialogFragment = LoginDialog.newInstance();
-            mDialogFragment.show(fragmentTransaction, "loginFrag");
+            mDialogFragment.show(fragmentTransaction, LOGIN_FRAGMENT);
         }
 
         EventBus.getDefault().register(this);
@@ -143,7 +144,7 @@ public class NavigationBarActivity extends AppCompatActivity {
         if (!mAuthRunning) {
             fragmentTransaction.remove(mDialogFragment);
             mAuthRunning = true;
-            mDialogFragment.show(fragmentTransaction, "loginFrag");
+            mDialogFragment.show(fragmentTransaction, LOGIN_FRAGMENT);
         }
     }
 
@@ -167,6 +168,7 @@ public class NavigationBarActivity extends AppCompatActivity {
 
                 // If fragment does not exist, create a new one.
                 fragment = mMyUserFragment;
+                //TODO: This is not needed. Need an extra layer for the access token.
                 mMyUserFragment.setAccessToken(mAccessToken);
                 setActivityTitle(getString(R.string.my_user));
 

@@ -105,6 +105,7 @@ public class ImageDetailFragment extends Fragment {
 
         mDetailUsersTextView.setText(mMedia.getUser().getFullName());
 
+        //TODO: Need to add the hashtags.  Also remove hashtags from header.
         // Displays either ImageView or VideoView based of the type.
         if (mMedia.getType().equals("image")) {
             Picasso

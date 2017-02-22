@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
+import com.houkcorp.margatsniym.events.LoginEvent;
 import com.houkcorp.margatsniym.events.MediaChangedEvent;
 import com.houkcorp.margatsniym.models.Media;
 import com.houkcorp.margatsniym.models.MediaResponse;
@@ -60,6 +61,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private boolean isDualPane = false;
     private boolean isFirstLoad = false;
     private boolean isSyncingData = false;
+    private boolean oauthEventFired = false;
     private ImagesGridViewFragment mUsersLikedMediaFragment;
     private ImagesGridViewFragment mUsersRecentMediaFragment;
     private String mAccessToken;
@@ -152,14 +154,61 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onEvent(MediaChangedEvent event) {
         isSyncingData = true;
 
+        //TODO: updating and adding or removing.
         mUsersLikedMediaFragment.addOrRemoveMediaContent(event.getMedia());
         mUsersRecentMediaFragment.updateMediaContent(event.getMedia());
+    }
+
+    /**
+     * Catches the login and saves the Access Key to shared Prefs.
+     *
+     * @param event The event being returned.  Holds the Access Key.
+     */
+    @Subscribe
+    public void onEvent(LoginEvent event) {
+        oauthEventFired = false;
+    }
+
+    /**
+     * This is called when the user pulls down to refresh the page.  This will clear and reacquire
+     * all data.
+     */
+    @Override
+    public void onRefresh() {
+        if (!isSyncingData) {
+            isSyncingData = true;
+            isFirstLoad = false;
+
+            mProgressBar.setVisibility(View.VISIBLE);
+            mUserLayout.setVisibility(View.INVISIBLE);
+
+            mUserImageView.setImageResource(0);
+            mNameTextView.setText("");
+            mWebsiteTextView.setText("");
+            mBioLinearLayout.setVisibility(View.GONE);
+            mBioTextView.setText("");
+            mCountsLinearLayout.setVisibility(View.GONE);
+            mMediaCountTextView.setText("");
+            mFollowsTextView.setText("");
+            mFollowedByTextView.setText("");
+            mRecentMediaLinearLayout.setVisibility(View.GONE);
+            mLikedMediaLinearLayout.setVisibility(View.GONE);
+
+            if (NetworkUtils.isOnline(getContext())) {
+                retrieveAllUserData();
+            } else {
+                Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
+            }
+        }
+
+        mUserSwipeRefreshLayout.setRefreshing(false);
     }
 
     /**
      * Fetches the basic info from the Instagram Server
      */
     private void retrieveBasicUserInfo() {
+        //TODO: Check out dagger here.  New retrofit interface here every time currently.
         UserService service = ServiceFactory.getInstagramUserService();
         service.getUser(mAccessToken)
                 .subscribeOn(Schedulers.io())
@@ -184,7 +233,9 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                                 MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
                                 Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
-                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException")) {
+                                //TODO: need to make this a final string
+                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException") && !oauthEventFired) {
+                                    oauthEventFired = true;
                                     EventBus.getDefault().post(new ExpiredOAuthEvent(true));
                                 }
                             } catch (IOException e) {
@@ -234,8 +285,6 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
             mCountsLinearLayout.setVisibility(View.VISIBLE);
         }
-
-        retrieveUsersRecentMedia();
     }
 
     /**
@@ -246,7 +295,6 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         service.getUsersRecentMedia(mAccessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .take(20)
                 .subscribe(new Subscriber<Response<MediaResponse<ArrayList<Media>>>>() {
                     @Override
                     public void onCompleted() {
@@ -266,7 +314,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                                 MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
                                 Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
-                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException")) {
+                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException") && !oauthEventFired) {
+                                    oauthEventFired = true;
                                     EventBus.getDefault().post(new ExpiredOAuthEvent(true));
                                 }
                             } catch (IOException e) {
@@ -296,8 +345,6 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         } else {
             mRecentMediaLinearLayout.setVisibility(View.GONE);
         }
-
-        retrieveUsersLikedMedia();
     }
 
     /**
@@ -308,7 +355,6 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         service.getUsersLikedMedia(mAccessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .take(20)
                 .subscribe(new Subscriber<Response<MediaResponse<ArrayList<Media>>>>() {
                     @Override
                     public void onCompleted() {
@@ -328,7 +374,8 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                                 MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
                                 Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
-                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException")) {
+                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException") && !oauthEventFired) {
+                                    oauthEventFired = true;
                                     EventBus.getDefault().post(new ExpiredOAuthEvent(true));
                                 }
                             } catch (IOException e) {
@@ -365,6 +412,13 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mUserLayout.setVisibility(View.VISIBLE);
     }
 
+    //TODO: Make sure to handle on event login.
+    private void retrieveAllUserData() {
+        retrieveBasicUserInfo();
+        retrieveUsersRecentMedia();
+        retrieveUsersLikedMedia();
+    }
+
     /**
      * Sets the Access Key of the fragment
      *
@@ -372,42 +426,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
      */
     public void setAccessToken(String accessToken) {
         mAccessToken = accessToken;
-        retrieveBasicUserInfo();
-    }
-
-    /**
-     * This is called when the user pulls down to refresh the page.  This will clear and reacquire
-     * all data.
-     */
-    @Override
-    public void onRefresh() {
-        if (!isSyncingData) {
-            isSyncingData = true;
-            isFirstLoad = false;
-
-            mProgressBar.setVisibility(View.VISIBLE);
-            mUserLayout.setVisibility(View.INVISIBLE);
-
-            mUserImageView.setImageResource(0);
-            mNameTextView.setText("");
-            mWebsiteTextView.setText("");
-            mBioLinearLayout.setVisibility(View.GONE);
-            mBioTextView.setText("");
-            mCountsLinearLayout.setVisibility(View.GONE);
-            mMediaCountTextView.setText("");
-            mFollowsTextView.setText("");
-            mFollowedByTextView.setText("");
-            mRecentMediaLinearLayout.setVisibility(View.GONE);
-            mLikedMediaLinearLayout.setVisibility(View.GONE);
-
-            if (NetworkUtils.isOnline(getContext())) {
-                retrieveBasicUserInfo();
-            } else {
-                Toast.makeText(getContext(), R.string.not_online, Toast.LENGTH_LONG).show();
-            }
-        }
-
-        mUserSwipeRefreshLayout.setRefreshing(false);
+        retrieveAllUserData();
     }
 
     /**
