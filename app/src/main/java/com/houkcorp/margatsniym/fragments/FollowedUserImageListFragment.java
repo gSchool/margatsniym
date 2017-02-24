@@ -16,8 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.adapters.FollowedUserImageAdapter;
 import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
@@ -32,11 +30,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
+import retrofit2.Converter;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
@@ -48,6 +48,8 @@ import rx.schedulers.Schedulers;
  * A Recycler view of max 20 users and max 5 images that are followed by the logged in user.
  */
 public class FollowedUserImageListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private static final String FOLLOWED_USER_IMAGE_LIST_FRAGMENT = "FollowedUserImageListFragment";
+
     private ArrayList<ArrayList<Media>> mFollowedUsersMedia = new ArrayList<>();
     private boolean isDualPane = false;
     private boolean isSyncingData = false;
@@ -174,7 +176,7 @@ public class FollowedUserImageListFragment extends Fragment implements SwipeRefr
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("FollowedUserImageList", e.getLocalizedMessage());
+                        Log.e(FOLLOWED_USER_IMAGE_LIST_FRAGMENT, e.getLocalizedMessage());
                     }
 
                     @Override
@@ -183,15 +185,15 @@ public class FollowedUserImageListFragment extends Fragment implements SwipeRefr
                         // Look for error responses from the Instagram API
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
-                                Gson gson = new GsonBuilder().create();
-                                MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
-                                Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
+                                Converter<ResponseBody, MediaResponse> errorConverter = ServiceFactory.getRetrofit().responseBodyConverter(MediaResponse.class, new Annotation[0]);
+                                MediaResponse mediaError = errorConverter.convert(response.errorBody());
+                                Toast.makeText(getContext(), mediaError.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
-                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException")) {
+                                if (mediaError.getMeta().getErrorType().equals(getString(R.string.o_auth_error))) {
                                     EventBus.getDefault().post(new ExpiredOAuthEvent(true));
                                 }
                             } catch (IOException e) {
-                                Log.e("MyUserFragment", "There was a problem parsing the error response.");
+                                Log.e(FOLLOWED_USER_IMAGE_LIST_FRAGMENT, "There was a problem parsing the error response.");
                             }
                         } else {
                             //If no errors, post the results.

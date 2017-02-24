@@ -22,8 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.activities.ImageDetailActivity;
 import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
@@ -38,6 +36,7 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -45,12 +44,15 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
+import retrofit2.Converter;
 import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class ImageDetailFragment extends Fragment {
+    private static String IMAGE_DETAIL_FRAGMENT = "ImageDetailFragment";
+
     private Media mMedia;
     private String mAccessToken;
 
@@ -155,7 +157,7 @@ public class ImageDetailFragment extends Fragment {
             try {
                 addresses = geocoder.getFromLocation(mMedia.getLocation().getLatitude(), mMedia.getLocation().getLongitude(), 1);
             } catch (IOException e) {
-                Log.e("ImageDetailFragment", e.getLocalizedMessage());
+                Log.e(IMAGE_DETAIL_FRAGMENT, e.getLocalizedMessage());
             }
 
             if (addresses != null && addresses.size() > 0) {
@@ -195,7 +197,6 @@ public class ImageDetailFragment extends Fragment {
         service.likeMedia(mMedia.getId(), mAccessToken, "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .take(20)
                 .subscribe(new Subscriber<Response<MediaResponse>>() {
                     @Override
                     public void onCompleted() {
@@ -203,7 +204,7 @@ public class ImageDetailFragment extends Fragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("ImageDetailFragment", e.getLocalizedMessage());
+                        Log.e(IMAGE_DETAIL_FRAGMENT, e.getLocalizedMessage());
                     }
 
                     @Override
@@ -211,15 +212,15 @@ public class ImageDetailFragment extends Fragment {
                         ResponseBody errorBody = response.errorBody();
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
-                                Gson gson = new GsonBuilder().create();
-                                MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
-                                Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
+                                Converter<ResponseBody, MediaResponse> errorConverter = ServiceFactory.getRetrofit().responseBodyConverter(MediaResponse.class, new Annotation[0]);
+                                MediaResponse mediaError = errorConverter.convert(response.errorBody());
+                                Toast.makeText(getContext(), mediaError.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
-                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException")) {
+                                if (mediaError.getMeta().getErrorType().equals(getString(R.string.o_auth_error))) {
                                     EventBus.getDefault().post(new ExpiredOAuthEvent(true));
                                 }
                             } catch (IOException e) {
-                                Log.e("MyUserFragment", "There was a problem parsing the error response.");
+                                Log.e(IMAGE_DETAIL_FRAGMENT, "There was a problem parsing the error response.");
                             }
                         } else {
                             if (response.body().getMeta().getCode() == 200) {
@@ -244,7 +245,6 @@ public class ImageDetailFragment extends Fragment {
         service.unLikeMedia(mMedia.getId(), mAccessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .take(20)
                 .subscribe(new Subscriber<Response<MediaResponse>>() {
                     @Override
                     public void onCompleted() {
@@ -252,7 +252,7 @@ public class ImageDetailFragment extends Fragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("ImageDetailFragment", e.getLocalizedMessage());
+                        Log.e(IMAGE_DETAIL_FRAGMENT, e.getLocalizedMessage());
                     }
 
                     @Override
@@ -260,15 +260,15 @@ public class ImageDetailFragment extends Fragment {
                         ResponseBody errorBody = response.errorBody();
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
-                                Gson gson = new GsonBuilder().create();
-                                MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
-                                Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
+                                Converter<ResponseBody, MediaResponse> errorConverter = ServiceFactory.getRetrofit().responseBodyConverter(MediaResponse.class, new Annotation[0]);
+                                MediaResponse mediaError = errorConverter.convert(response.errorBody());
+                                Toast.makeText(getContext(), mediaError.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
-                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException")) {
+                                if (mediaError.getMeta().getErrorType().equals(getString(R.string.o_auth_error))) {
                                     EventBus.getDefault().post(new ExpiredOAuthEvent(true));
                                 }
                             } catch (IOException e) {
-                                Log.e("MyUserFragment", "There was a problem parsing the error response.");
+                                Log.e(IMAGE_DETAIL_FRAGMENT, "There was a problem parsing the error response.");
                             }
                         } else {
                             if (response.body().getMeta().getCode() == 200) {

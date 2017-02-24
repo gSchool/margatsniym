@@ -17,12 +17,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.houkcorp.margatsniym.R;
 import com.houkcorp.margatsniym.events.ExpiredOAuthEvent;
 import com.houkcorp.margatsniym.events.LoginEvent;
@@ -40,12 +37,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
+import retrofit2.Converter;
 import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -57,6 +56,7 @@ import rx.schedulers.Schedulers;
 public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final int MAX_LIST_COUNT = 20;
     public static final String INSTAGRAM_ACCESS_TOKEN = "INSTAGRAM_ACCESS_TOKEN";
+    private static final String MY_USER_FRAGMENT = "MyUserFragment";
 
     private boolean isDualPane = false;
     private boolean isFirstLoad = false;
@@ -220,7 +220,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("ImageDetailFragment", e.getLocalizedMessage());
+                        Log.e(MY_USER_FRAGMENT, e.getLocalizedMessage());
                     }
 
                     @Override
@@ -229,17 +229,16 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         ResponseBody errorBody = response.errorBody();
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
-                                Gson gson = new GsonBuilder().create();
-                                MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
-                                Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
+                                Converter<ResponseBody, MediaResponse> errorConverter = ServiceFactory.getRetrofit().responseBodyConverter(MediaResponse.class, new Annotation[0]);
+                                MediaResponse mediaError = errorConverter.convert(response.errorBody());
+                                Toast.makeText(getContext(), mediaError.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
-                                //TODO: need to make this a final string
-                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException") && !oauthEventFired) {
+                                if (mediaError.getMeta().getErrorType().equals(getString(R.string.o_auth_error))) {
                                     oauthEventFired = true;
                                     EventBus.getDefault().post(new ExpiredOAuthEvent(true));
                                 }
                             } catch (IOException e) {
-                                Log.e("MyUserFragment", "There was a problem parsing the error response.");
+                                Log.e(MY_USER_FRAGMENT, "There was a problem parsing the error response.");
                             }
                         } else {
                             showUserInfo(response.body().getData());
@@ -302,7 +301,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("ImageDetailFragment", e.getLocalizedMessage());
+                        Log.e(MY_USER_FRAGMENT, e.getLocalizedMessage());
                     }
 
                     @Override
@@ -310,16 +309,16 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         ResponseBody errorBody = response.errorBody();
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
-                                Gson gson = new GsonBuilder().create();
-                                MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
-                                Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
+                                Converter<ResponseBody, MediaResponse> errorConverter = ServiceFactory.getRetrofit().responseBodyConverter(MediaResponse.class, new Annotation[0]);
+                                MediaResponse mediaError = errorConverter.convert(response.errorBody());
+                                Toast.makeText(getContext(), mediaError.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
-                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException") && !oauthEventFired) {
+                                if (mediaError.getMeta().getErrorType().equals(getString(R.string.o_auth_error))) {
                                     oauthEventFired = true;
                                     EventBus.getDefault().post(new ExpiredOAuthEvent(true));
                                 }
                             } catch (IOException e) {
-                                Log.e("MyUserFragment", "There was a problem parsing the error response.");
+                                Log.e(MY_USER_FRAGMENT, "There was a problem parsing the error response.");
                             }
                         } else {
                             showUsersRecentMedia(response.body().getData());
@@ -362,7 +361,7 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("ImageDetailFragment", e.getLocalizedMessage());
+                        Log.e(MY_USER_FRAGMENT, e.getLocalizedMessage());
                     }
 
                     @Override
@@ -370,16 +369,16 @@ public class MyUserFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         ResponseBody errorBody = response.errorBody();
                         if (!response.isSuccessful() && errorBody != null) {
                             try {
-                                Gson gson = new GsonBuilder().create();
-                                MediaResponse instagramErrorResponse = gson.fromJson(errorBody.string(), MediaResponse.class);
-                                Toast.makeText(getContext(), instagramErrorResponse.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
+                                Converter<ResponseBody, MediaResponse> errorConverter = ServiceFactory.getRetrofit().responseBodyConverter(MediaResponse.class, new Annotation[0]);
+                                MediaResponse mediaError = errorConverter.convert(response.errorBody());
+                                Toast.makeText(getContext(), mediaError.getMeta().getErrorMessage(), Toast.LENGTH_LONG).show();
 
-                                if (instagramErrorResponse.getMeta().getErrorType().equals("OAuthAccessTokenException") && !oauthEventFired) {
+                                if (mediaError.getMeta().getErrorType().equals(getString(R.string.o_auth_error))) {
                                     oauthEventFired = true;
                                     EventBus.getDefault().post(new ExpiredOAuthEvent(true));
                                 }
                             } catch (IOException e) {
-                                Log.e("MyUserFragment", "There was a problem parsing the error response.");
+                                Log.e(MY_USER_FRAGMENT, "There was a problem parsing the error response.");
                             }
                         } else {
                             showUsersLikedMedia(response.body().getData());

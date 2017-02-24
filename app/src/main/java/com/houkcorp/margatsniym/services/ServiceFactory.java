@@ -28,4 +28,20 @@ public class ServiceFactory {
 
         return retrofit.create(UserService.class);
     }
+
+    public static Retrofit getRetrofit() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(loggingInterceptor);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(USER_URL)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
+                .build();
+
+        return retrofit;
+    }
 }
